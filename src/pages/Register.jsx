@@ -12,7 +12,6 @@ import api from "../helpers/axiosSetting";
 const Register = () => {
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState("");
-    const [blob, setBlob] = useState(null);
     const navigate = useNavigate()
 
     const handleClose = () => {
@@ -30,26 +29,26 @@ const Register = () => {
         if (file) {
             let fileReader = new FileReader();
             fileReader.readAsDataURL(file);
-            fileReader.onload = (e) => {
-                const b = e.target.result
-                return setBlob(b)
+            fileReader.onload = async (e) => {
+                const blob = e.target.result
+                try {
+                    const res = await api.post('/user/auth/register', {
+                        email,
+                        password,
+                        username,
+                        avatar: blob
+                    })
+                    console.log(res)
+                    setLoading(false)
+                    navigate("/login")
+                    window.location.reload()
+                } catch (err) {
+                    setErr(err)
+                    setLoading(false)
+                }
             }
         }
-        try {
-            const res = await api.post('/user/auth/register', {
-                email,
-                password,
-                username,
-                avatar: blob
-            })
-            console.log(res)
-            setLoading(false)
-            navigate("/")
-            window.location.reload()
-        } catch (err) {
-            setErr(err)
-            setLoading(false)
-        }
+
     }
 
     return (
@@ -78,7 +77,7 @@ const Register = () => {
                             <img src={AddAvatar} alt="" />
                             <span>Add an avatar (image only)</span>
                         </label>
-                        <button disabled={loading} >
+                        <button disabled={loading} id={'submitRegister'}>
                             Register
                         </button>
                         <Box sx={{

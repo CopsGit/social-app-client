@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState({});
+    const [accessToken, setAccessToken] = useState("");
 
     useEffect(() => {
         const accessToken = localStorage.getItem('accessToken');
@@ -15,6 +16,7 @@ export const AuthContextProvider = ({ children }) => {
                         Authorization: `Bearer ${accessToken}`
                     }
                 })
+                setAccessToken(accessToken);
                 setCurrentUser(res.data.info)
             } catch (e) {
                 console.log(e)
@@ -28,7 +30,7 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ currentUser}}>
+        <AuthContext.Provider value={{ currentUser, accessToken}}>
             {children}
         </AuthContext.Provider>
     );
