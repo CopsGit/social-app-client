@@ -11,21 +11,16 @@ const Suggestions = () => {
     const { currentUser, accessToken } = useContext(AuthContext);
 
     const handleFollow = async (id) => {
+        // setLoading(true);
         try {
-            const ref = doc(db, "userFollows", currentUser.uid)
-            const docSnap = await getDoc(ref);
-            const following = docSnap.data().following
-            if (docSnap.exists()) {
-                following?.includes(id) === false && following.push(id)
-                console.log("00000000000000",following)
-                await setDoc(doc(db, "userFollows", currentUser.uid), {
-                    following: following
-                })
-            } else {
-                await setDoc(doc(db, "userFollows", currentUser.uid), {
-                    following: [id]
-                })
-            }
+            const res = await api.post('/follow', {
+                userId: id
+            }, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+            console.log(res);
             setSuccessMessage(true)
             return window.location.reload()
         } catch (e) {
@@ -36,38 +31,20 @@ const Suggestions = () => {
 
     useEffect(()=>{
         setLoading(true)
-        const fetchUser = async () => {
-            const alluser = await api.get('/user',{
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })
-            const rawSuggestions = []
-            let following = []
+        const fetchSuggestions = async () => {
             try{
-                const ref = doc(db, "userFollows", currentUser.uid)
-                const docSnap = await getDoc(ref);
-                if (docSnap.exists()) {
-                    following = docSnap?.data().following
-                }
+                const res = await api.get('/follow/suggestion',{
+                    headers: {Authorization: `Bearer ${accessToken}`}
+                })
+                console.log(res)
+                setSuggestions(res.data.info)
             } catch (e) {
                 console.log(e)
                 setLoading(false)
             }
-            userSnapshot.forEach((doc) => {
-                const rawRow = {
-                    image: doc.data().photoURL,
-                    username: doc.data().displayName,
-                    id: doc.id,
-                }
-                if (doc.id !== currentUser.uid) {
-                    following?.includes(doc.id) === false && rawSuggestions.push(rawRow)
-                }
-            })
-            setSuggestions(alluser.slice(0, 3))
             setLoading(false)
         }
-        fetchUser().then()
+        fetchSuggestions().then()
     }, [])
 
     return (

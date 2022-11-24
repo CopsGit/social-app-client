@@ -1,11 +1,13 @@
 // @mui
 import PropTypes from 'prop-types';
 import { alpha, styled } from '@mui/material/styles';
-import { Card, Typography } from '@mui/material';
+import {Box, Card, Typography} from '@mui/material';
 // utils
 import { fShortenNumber } from '../../utils/formatNumber';
 // components
 import Iconify from '../../components/iconify';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +32,7 @@ AppWidgetSummary.propTypes = {
     sx: PropTypes.object,
 };
 
-export default function AppWidgetSummary({ title, total, icon, color = 'primary', sx, ...other }) {
+export default function AppWidgetSummary({ title, total, diff, icon, color = 'primary', sx, ...other }) {
     return (
         <Card
             sx={{
@@ -59,9 +61,27 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
 
             <Typography variant="h3">{fShortenNumber(total)}</Typography>
 
-            <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
+            <Typography variant="subtitle2" sx={{ opacity: 0.72, marginBottom:1 }}>
                 {title}
             </Typography>
+
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '40%',
+                    margin: 'auto',
+
+                }}
+            >
+
+                {diff > 0 && <TrendingUpIcon sx={{ color: '#ffffff' }}/>}
+                {diff > 0 && <Typography variant="h5" sx={{ color: '#ffffff' }}>+{diff}%</Typography>}
+                {diff < 0 && <TrendingDownIcon sx={{ color: '#ffffff' }}/>}
+                {diff < 0 && <Typography variant="h5" sx={{ color: '#ffffff' }}>{diff}%</Typography>}
+                {diff === 0 || !diff && <Typography variant="h5" sx={{ color: '#ffffff' }}>0%</Typography>}
+            </Box>
         </Card>
     );
 }

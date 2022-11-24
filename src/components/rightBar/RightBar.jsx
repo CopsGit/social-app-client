@@ -1,5 +1,5 @@
 import "../../style/rightBar.scss";
-// import Suggestions from "./conponents/Suggestions";
+import Suggestions from "./conponents/Suggestions";
 
 const RightBar = () => {
 
@@ -7,9 +7,9 @@ const RightBar = () => {
     return (
         <div className="rightBar">
             <div className="container">
-                {/*<div className="item">*/}
-                {/*    <Suggestions/>*/}
-                {/*</div>*/}
+                <div className="item">
+                    <Suggestions/>
+                </div>
                 <div className="item">
                     <span>Latest Activities</span>
                     <div className="user">
