@@ -18,6 +18,7 @@ const DashUsers = () => {
     const [successMessage, setSuccessMessage] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const { currentUser, accessToken } = useContext(AuthContext);
+    const [searched, setSearched] = useState(false);
 
     useEffect(() => {
         setLoading(true)
@@ -72,8 +73,8 @@ const DashUsers = () => {
         {
             field: 'email',
             headerName: 'Email Address',
-            flex: 0.5,
-            minWidth: 240,
+            flex: 0.4,
+            minWidth: 220,
             editable: false,
         },
         {
@@ -106,188 +107,144 @@ const DashUsers = () => {
             minWidth: 150,
             editable: true,
         },
-        {
-            field: "action",
-            headerName: "Action",
-            flex: 0.3,
-            minWidth: 100,
-            renderCell: (params) => {
-                // console.log(params);
-                return (
-                    <>
-                        <Button
-                            onClick={() => {
-                                // setUserId(params?.id)
-                                // handleUpdate(params).then(r => setSuccessMessage(true))
-                            }}
-                            variant="contained"
-                            sx={{margin:'0 10px', color:'#ffffff', backgroundColor:'#c1beff'}}
-                        >Update</Button>
-                        {/*{*/}
-                        {/*    selected.length > 0 && <Button*/}
-                        {/*        onClick={() => {*/}
-                        {/*            // setUserId(params?.id)*/}
-                        {/*            handleUpdateAll(selected).then(r => setSuccessMessage(true))*/}
-                        {/*        }}*/}
-                        {/*        variant="contained"*/}
-                        {/*        sx={{margin:'0 10px', color:'#c1beff', backgroundColor:'#ffffff',*/}
-                        {/*            position: 'fixed', left: '50%', top: '2%'*/}
-                        {/*    }}*/}
-                        {/*    >Update All</Button>*/}
-                        {/*}*/}
-                    </>
-                );
-            }
-        },
+        // {
+        //     field: "action",
+        //     headerName: "Action",
+        //     flex: 0.3,
+        //     minWidth: 100,
+        //     renderCell: (params) => {
+        //         // console.log(params);
+        //         return (
+        //             <>
+        //                 <Button
+        //                     onClick={() => {
+        //                         // setUserId(params?.id)
+        //                         handleUpdate(params).then(r => setSuccessMessage(true))
+        //                     }}
+        //                     variant="contained"
+        //                     sx={{margin:'0 10px', color:'#ffffff', backgroundColor:'#c1beff'}}
+        //                 >Update</Button>
+        //             </>
+        //         );
+        //     }
+        // },
     ];
 
     // const handleUpdate = async (params) => {
     //     setLoading(true)
     //     try {
-    //         const docRef = doc(db, "users", params?.id);
-    //         const data = {
-    //             isActive: params.row.isActive,
-    //             isStaff: params.row.isStaff,
-    //         };
-    //         await updateDoc(docRef, data)
-    //             .then(msg => {
-    //                 setSuccessMessage(true)
-    //                 setLoading(false)
-    //             })
-    //             .catch(error => {
-    //                 setErrMessage(error)
-    //                 setLoading(false)
-    //             })
+    //         console.log(params)
+    //         const res = await api.post('/user/auth/update', {
+    //             id: params?.id,
+    //             isActive: params?.row.isActive,
+    //             isStaff: params?.row.isStaff,
+    //         },{
+    //             headers: {
+    //                 Authorization: `Bearer ${accessToken}`
+    //             }
+    //         })
+    //         res && setSuccessMessage(true)
+    //         setLoading(false)
     //     } catch (err) {
     //         setErrMessage(err)
     //         setLoading(false)
     //     }
     // }
 
-    // const handleUpdateAll = async (selected) => {
-    //     setLoading(true)
-    //     console.log("=========",selected)
-    //
-    //     try {
-    //         await Promise.all(selected?.map(async (params, index) => {
-    //             const docRef = doc(db, "users", params?.id);
-    //             const data = {
-    //                 isActive: params.isActive,
-    //                 isStaff: params.isStaff,
-    //             };
-    //             console.log("=========",data)
-    //             await updateDoc(docRef, data)
-    //         })).then(msg => {
-    //                 setSuccessMessage(true)
-    //                 setLoading(false)
-    //             })
-    //             .catch(error => {
-    //                 setErrMessage(error)
-    //                 setLoading(false)
-    //             })
-    //     } catch (err) {
-    //         setErrMessage(err)
-    //         setLoading(false)
-    //     }
-    // }
-    // // console.log("=========",selected)
-    // const processRowUpdate = (newRow) => {
-    //     // const updatedRow = { ...newRow, isNew: false };
-    //     selected.map((value, index)=>{
-    //         if (value.id === newRow.id) {
-    //             selected[index] = newRow;
-    //         }
-    //     })
-    //     // console.log("111111111",newRow)
-    // };
+    const handleUpdateAll = async (selected) => {
+        setLoading(true)
+        console.log(selected)
+        try {
+            await Promise.all(selected?.map(async (id) => {
+                const res = await api.post('/user/auth/update', {
+                    id: id.id,
+                    isActive: id.isActive,
+                    isStaff: id.isStaff,
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                })
+            }))
+            setLoading(false)
+            setSuccessMessage(true)
+        } catch (err) {
+            setErrMessage(err)
+            setLoading(false)
+        }
+    };
+
+    const processRowUpdate = (newRow) => {
+            // const updatedRow = { ...newRow, isNew: false };
+            selected.map((value, index)=>{
+                if (value.id === newRow.id) {
+                    selected[index] = newRow;
+                }
+            })
+            // console.log("111111111",newRow)
+        };
 
     const handleClose =()=>{
         setLoading(false)
     }
 
-    // const handleSearch = async (e) => {
-    //         try{
-    //             const row = []
-    //             const q = query(collection(db, "users"), where("uid", "==", e));
-    //             const userSnapshot = await getDocs(q).then((querySnapshot) => {
-    //                 querySnapshot.forEach((doc) => {
-    //                     // doc.data() is never undefined for query doc snapshots
-    //                     const timestamp = doc.data().createAt.seconds
-    //                     const createAt =new Date(timestamp * 1000)
-    //                     const createAt1 = createAt.toString()
-    //                     const createAt2 = createAt1.split(' ')
-    //                     const createAt3 = createAt2[1]+ ' ' +
-    //                         createAt2[2] + ' ' +
-    //                         createAt2[3] + ' ' +
-    //                         createAt2[4]
-    //                     // console.log("=======",doc.data().createAt)
-    //                     const rawRow = {
-    //                         image: doc.data().photoURL,
-    //                         id: doc.id,
-    //                         username: doc.data().displayName,
-    //                         email: doc.data().email,
-    //                         isActive: doc.data().isActive,
-    //                         isStaff: doc.data().isStaff,
-    //                         createAt: createAt3
-    //                     }
-    //                     row.push(rawRow)
-    //                 });
-    //
-    //                 // console.log("----------", doc.data())
-    //                 // row.push(rawRow)
-    //                 // });
-    //
-    //                 setRows(row);
-    //             })
-    //             // userSnapshot.forEach((doc) => {
-    //                 // doc.data() is never undefined for query doc snapshots
-    //
-    //             console.log("----------", rows)
-    //             setLoading(false)
-    //         } catch (error) {
-    //             console.log(error)
-    //             setLoading(false)
-    //         }
-    //     }
+    const handleSearch = async (e) => {
+            try{
+                const row = []
+                const res = await api.get(`/user/getOne/${e}`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                }})
+                const user = res?.data?.info
+                const rawRow = {
+                    image: user.avatar,
+                    id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    isActive: user.isActive,
+                    isStaff: user.isStaff,
+                    createdAt: user.createdAt,
+                    lastLogin: user.lastLogin,
+                }
+                row.push(rawRow)
+                setRows(row);
+                setLoading(false)
+            } catch (error) {
+                console.log(error)
+                setLoading(false)
+            }
+        }
 
-    // const handleClear = async () => {
-    //     setLoading(true)
-    //     setInputValue("")
-    //     try{
-    //         const row = []
-    //         const userData = await collection(db, "users");
-    //         const userSnapshot =  await getDocs(userData)
-    //         userSnapshot.forEach((doc) => {
-    //             // doc.data() is never undefined for query doc snapshots
-    //             const timestamp = doc.data().createAt.seconds
-    //             const createAt =new Date(timestamp * 1000)
-    //             const createAt1 = createAt.toString()
-    //             const createAt2 = createAt1.split(' ')
-    //             const createAt3 = createAt2[1]+ ' ' +
-    //                 createAt2[2] + ' ' +
-    //                 createAt2[3] + ' ' +
-    //                 createAt2[4]
-    //             // console.log("=======",doc.data().createAt)
-    //             const rawRow = {
-    //                 image: doc.data().photoURL,
-    //                 id: doc.id,
-    //                 username: doc.data().displayName,
-    //                 email: doc.data().email,
-    //                 isActive: doc.data().isActive,
-    //                 isStaff: doc.data().isStaff,
-    //                 createAt: createAt3
-    //             }
-    //             // console.log("----------", doc.data())
-    //             row.push(rawRow)
-    //         });
-    //
-    //         setRows(row);
-    //         setLoading(false)
-    //     } catch (error) {
-    //         console.log(error)
-    //         setLoading(false)
-    //     }
-    // }
+    const handleClear = async () => {
+        setLoading(true)
+        setInputValue("")
+        try{
+            const row = []
+            const res = await api.get('/user',{
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+            await Promise.all(res?.data?.info?.map(async (user) => {
+                const rawRow = {
+                    image: user.avatar,
+                    id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    isActive: user.isActive,
+                    isStaff: user.isStaff,
+                    createdAt: user.createdAt,
+                    lastLogin: user.lastLogin,
+                }
+                row.push(rawRow)
+            }))
+            setRows(row);
+            setLoading(false)
+        } catch (error) {
+            console.log(error)
+            setLoading(false)
+        }
+    }
 
     return (
         <Box sx={{ height:400, width: '100%' }}>
@@ -306,7 +263,7 @@ const DashUsers = () => {
                     setSelected(selectedRowData);
                 }}
                 // selectionModel={selected}
-                // processRowUpdate={processRowUpdate}
+                processRowUpdate={processRowUpdate}
                 onProcessRowUpdateError={(error) => {
                     console.log(error);
                 }}
@@ -354,16 +311,17 @@ const DashUsers = () => {
                     Done!
                 </Alert>
             }
-            {
-                selected.length > 0 && <Button
+            {/*{*/}
+            {/*    selected.length > 0 && */}
+                <Button
                     onClick={() => {
-                        // handleUpdateAll(selected).then(r => setSuccessMessage(true))
+                        handleUpdateAll(selected).then(r => setSuccessMessage(true))
                     }}
                     variant="contained"
                     sx={{margin:'0 10px', color:'#c1beff', backgroundColor:'#ffffff',
                         position: 'fixed', right: '2%', top: '2%', zIndex: '1122'}}
                 >Update All</Button>
-            }
+            {/*}*/}
             <Box
                 sx={{
                     position: 'fixed',
@@ -372,29 +330,43 @@ const DashUsers = () => {
                     zIndex: '1130',
                 }}
             >
-                <TextField sx={{
-                    backgroundColor: '#ffffff',
-                    borderRadius: '5px',
-                    color: '#c1beff',
-                    ":hover": {
-                        borderColor: '#c1beff',
-                    },
-                    "& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
-                        padding: '15px 10px',
-                    }
-                }}
-                           hiddenLabel
-                           value={inputValue}
-                           InputProps={{
-                               startAdornment: (
-                                   <InputAdornment position="start">
-                                       <SearchIcon/>
-                                   </InputAdornment>
-                               ),
-                           }}
+                <TextField
+                    sx={{
+                        backgroundColor: '#ffffff',
+                        borderRadius: '5px',
+                        color: '#c1beff',
+                        ":hover": {
+                            borderColor: '#c1beff',
+                        },
+                        "& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
+                            padding: '15px 10px',
+                        },
+                        "& .css-1xab92c-MuiInputBase-root-MuiFilledInput-root:before": {
+                            borderBottom: 'none',
+                        },
+                        "& .css-1xab92c-MuiInputBase-root-MuiFilledInput-root:after": {
+                            borderBottom: 'none',
+                        },
+                        "& .css-1xab92c-MuiInputBase-root-MuiFilledInput-root:hover": {
+                            borderBottom: 'none',
+                        },
+                        "& .css-1xab92c-MuiInputBase-root-MuiFilledInput-root:hover:not(.Mui-disabled):before": {
+                            borderBottom: 'none',
+                        }
+                    }}
+                    // hiddenLabel
+                    value={inputValue}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon/>
+                            </InputAdornment>
+                        ),
+                    }}
+                    label={"Search by Username, Email or ID"}
                     onChange={(e) => setInputValue(e.target.value)}
-                    // onKeyDown={(e) => {e.key === 'Enter' && handleSearch(e.target.value)}}
-                        id="filled-hidden-label-normal"  variant="outlined"
+                    onKeyDown={(e) => {e.key === 'Enter' && handleSearch(e.target.value)}}
+                        id="outlined-adornment-weight"  variant="filled"
                 />
                 <Button
                     sx={{
@@ -409,7 +381,7 @@ const DashUsers = () => {
                             border: '1px solid #ffffff'
                         }
                     }}
-                    // onClick={handleClear}
+                    onClick={handleClear}
                 >Clear</Button>
             </Box>
         </Box>

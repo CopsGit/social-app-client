@@ -127,7 +127,7 @@ const DashLeftBar = () => {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" open={open} sx={{backgroundColor: "#c1beff"}}>
+            <AppBar position="absolute" open={open} sx={{backgroundColor: "#c1beff"}}>
                 <Toolbar>
                     <IconButton
                         color="inherit"
