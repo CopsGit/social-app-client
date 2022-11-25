@@ -2,7 +2,7 @@ import { useContext } from "react";
 import "../../style/comments.scss";
 import { AuthContext } from "../../context/authContext";
 
-const Comments = () => {
+const Comments = ({post}) => {
     const { currentUser } = useContext(AuthContext);
     //Temporary
     const comments = [

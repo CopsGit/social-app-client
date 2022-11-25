@@ -2,7 +2,6 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import {useContext, useEffect, useState} from "react";
-import {type} from "@testing-library/user-event/dist/type";
 import {Alert, Backdrop, Button, CircularProgress, InputAdornment, TextField, Typography} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import {AuthContext} from "../../context/authContext";
@@ -18,7 +17,6 @@ const DashUsers = () => {
     const [successMessage, setSuccessMessage] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const { currentUser, accessToken } = useContext(AuthContext);
-    const [searched, setSearched] = useState(false);
 
     useEffect(() => {
         setLoading(true)
