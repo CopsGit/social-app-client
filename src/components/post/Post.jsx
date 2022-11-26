@@ -48,17 +48,17 @@ const Post = ({ post }) => {
                         Authorization: `Bearer ${accessToken}`,
                     }
                 })
-                const data = await res.data.info;
-                data.interaction.likes.forEach(like => {
-                    if (like === currentUser._id) {
-                        setLiked(true);
-                    }
-                })
+                const likes = await res.data.info.interaction.likes;
+                if (likes && likes.includes(currentUser._id)) {
+                    setLiked(true);
+                } else {
+                    setLiked(false);
+                }
             } catch (e) {
                 console.log(e)
             }
         }
-        fetchData().then(r => console.log(r));
+        fetchData().then();
     }, []);
 
 
@@ -78,38 +78,69 @@ const Post = ({ post }) => {
 
     return (
         <div className="post">
-            <div className="container">
-                <div className="user">
-                    <div className="userInfo">
-                        <img src={post.profilePic} alt="" />
-                        <div className="details">
+            <div style={{padding: '20px'}} className='container'>
+                <div style={{display: 'flex', alignItems:'center', justifyContent:'space-between'}} className='user'>
+                    <div style={{display:'flex', gap:'20px'}} className='userinfo'>
+                        <img style={{height: '40px', width:'40px', borderRadius: "50%", objectFit:"cover"}}
+                            src={post.profilePic} alt="" />
+                        <div style={{display: "flex", flexDirection: "column",}} className='details'
+                        >
                             <Link
                                 to={`/profile/${post.userId}`}
                                 style={{ textDecoration: "none", color: "inherit" }}
                             >
-                                <span className="name">{post.name}</span>
+                                <span className='name' style={{fontWeight: "500",}}>{post.name}</span>
                             </Link>
-                            <span className="date">
+                            <span className='date' style={{fontSize:'12px'}}>
                                 {timeDifference()}
                             </span>
                         </div>
                     </div>
                     <MoreHorizIcon />
                 </div>
-                <div className="content">
+                <div className="content" style={{margin:'20px 0'}}>
                     <p>{post.desc}</p>
-                    <img src={post.img} alt="" />
+                    <img style={{
+                        width: "100%",
+                        maxHeight: "500px",
+                        objectFit: "cover",
+                        marginTop: "20px",
+                    }} src={post.img} alt="" />
                 </div>
-                <div className="info" onClick={handleLike}>
-                    <div className="item">
+                <div style={{display:'flex', alignItems:'center', gap:'20px'}} className="info" onClick={handleLike}>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            cursor: "pointer",
+                            fontSize: "14px",
+                        }}
+                        className="item">
                         {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
                         {likes} {post?.likes?.length > 1 ? "Likes" : "Like"}
                     </div>
-                    <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            cursor: "pointer",
+                            fontSize: "14px",
+                        }}
+                        className="item" onClick={() => setCommentOpen(!commentOpen)}>
                         <TextsmsOutlinedIcon />
                         {post?.comments?.length} {post?.comments?.length > 1 ? "Comments" : "Comment"}
                     </div>
-                    <div className="item">
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            cursor: "pointer",
+                            fontSize: "14px",
+                        }}
+                        className="item">
                         <ShareOutlinedIcon />
                         Share
                     </div>

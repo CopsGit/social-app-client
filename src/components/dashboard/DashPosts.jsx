@@ -2,10 +2,12 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import {useContext, useEffect, useState} from "react";
-import {Alert, Backdrop, Button, CircularProgress, InputAdornment, TextField, Typography} from "@mui/material";
+import {Alert, Backdrop, Button, CircularProgress, Dialog, InputAdornment, TextField, Typography} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import {AuthContext} from "../../context/authContext";
 import api from "../../helpers/axiosSetting";
+import Post from "../post/Post";
+import "../../style/posts.scss";
 
 
 const DashPosts = () => {
@@ -17,8 +19,7 @@ const DashPosts = () => {
     const [inputValue, setInputValue] = useState("");
     const { currentUser, accessToken } = useContext(AuthContext);
     const [openView, setOpenView] = useState(false);
-
-
+    const [curPost, setCurPost] = useState(null);
 
     useEffect(() => {
         setLoading(true)
@@ -88,14 +89,14 @@ const DashPosts = () => {
             headerName: 'createdAt (GMT)',
             flex: 0.4,
             minWidth: 150,
-            editable: true,
+            editable: false,
         },
         {
             field: 'editedAt',
             headerName: 'editedAt (GMT)',
             flex: 0.4,
             minWidth: 150,
-            editable: true,
+            editable: false,
         },
         {
             field: "action",
@@ -109,7 +110,7 @@ const DashPosts = () => {
                         <Button
                             onClick={() => {
                                 // setUserId(params?.id)
-                                handleView(params).then(r => setSuccessMessage(true))
+                                handleView(params)
                             }}
                             variant="contained"
                             sx={{margin:'0 10px', color:'#ffffff', backgroundColor:'#c1beff'}}
@@ -123,14 +124,34 @@ const DashPosts = () => {
     const handleView = async (params) => {
         setLoading(true)
         try {
-            console.log(params)
-            const res = await api.post(`/post/get/${params.id}`,{
+            const res = await api.get(`/post/get/${params.id}`,{
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
             })
-            res && setSuccessMessage(true)
+            const post = res?.data?.info
+            const resUser = await api.get(`/user/getOne/${post.userId}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                }
+            });
+
+            const rawPost = {
+                id: post?._id,
+                userId: post.userId,
+                name: resUser.data.info.username,
+                profilePic: resUser.data.info.avatar,
+                img: post?.content?.img,
+                desc: post?.content?.text,
+                likes: post?.interaction?.likes,
+                comments: post?.interaction?.comments,
+                createdAt: post?.status?.createdAt,
+            }
+            setCurPost(rawPost)
+            console.log(curPost)
             setLoading(false)
+            setOpenView(true)
+            console.log(openView)
         } catch (err) {
             setErrMessage(err)
             setLoading(false)
@@ -171,30 +192,58 @@ const DashPosts = () => {
     };
 
     const handleClose =()=>{
+        setOpenView(false)
         setLoading(false)
     }
 
     const handleSearch = async (e) => {
         try{
             const row = []
-            const res = await api.get(`/user/getOne/${e}`, {
+            const res = await api.get(`/post/get/${e}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }})
-            const user = res?.data?.info
-            const rawRow = {
-                image: user.avatar,
-                id: user._id,
-                username: user.username,
-                email: user.email,
-                isActive: user.isActive,
-                isStaff: user.isStaff,
-                createdAt: user.createdAt,
-                lastLogin: user.lastLogin,
+            if (res?.data?.info) {
+                const post = res?.data?.info
+                const rawRow = {
+                    id: post._id,
+                    userId: post?.userId,
+                    likes: post?.interaction?.likes.length,
+                    comments: post?.interaction?.comments?.length,
+                    isActive: post.status.isActive,
+                    createdAt: post.status.createdAt,
+                    editedAt: post.status.lastLogin,
+                }
+                row.push(rawRow)
+                setRows(row);
+                setLoading(false)
+            } else {
+                const res = await api.get(`/post/${e}`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                })
+                if (res?.data?.info) {
+                    await Promise.all(res?.data?.info?.map(async (post) => {
+                        const rawRow = {
+                            id: post._id,
+                            userId: post?.userId,
+                            likes: post?.interaction?.likes.length,
+                            comments: post?.interaction?.comments?.length,
+                            isActive: post.status.isActive,
+                            createdAt: post.status.createdAt,
+                            editedAt: post.status.lastLogin,
+                        }
+                        row.push(rawRow)
+                    }))
+                    setRows(row);
+                    setLoading(false)
+                } else {
+                    setRows([]);
+                    setLoading(false)
+                }
             }
-            row.push(rawRow)
-            setRows(row);
-            setLoading(false)
+
         } catch (error) {
             console.log(error)
             setLoading(false)
@@ -206,21 +255,20 @@ const DashPosts = () => {
         setInputValue("")
         try{
             const row = []
-            const res = await api.get('/user',{
+            const res = await api.get('/post/all',{
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
             })
-            await Promise.all(res?.data?.info?.map(async (user) => {
+            await Promise.all(res?.data?.info?.map(async (post) => {
                 const rawRow = {
-                    image: user.avatar,
-                    id: user._id,
-                    username: user.username,
-                    email: user.email,
-                    isActive: user.isActive,
-                    isStaff: user.isStaff,
-                    createdAt: user.createdAt,
-                    lastLogin: user.lastLogin,
+                    id: post._id,
+                    userId: post?.userId,
+                    likes: post?.interaction?.likes.length,
+                    comments: post?.interaction?.comments?.length,
+                    isActive: post.status.isActive,
+                    createdAt: post.status.createdAt,
+                    editedAt: post.status.lastLogin,
                 }
                 row.push(rawRow)
             }))
@@ -256,6 +304,25 @@ const DashPosts = () => {
                 disableSelectionOnClick
                 experimentalFeatures={{ newEditingApi: true }}
             />
+            {
+                openView &&
+                    <Dialog
+                        fullWidth={true}
+                        maxWidth={"sm"}
+                        open={openView}
+                        onClose={handleClose}
+                        sx={{
+                            '& .css-tlc64q-MuiPaper-root-MuiDialog-paper':{
+                                borderRadius: '20px',
+                            }
+                        }}
+                    >
+                        <Box className="posts">
+                        <Post post={curPost} key={curPost.id}/>
+                        </Box>
+                    </Dialog>
+
+            }
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={loading}
@@ -349,7 +416,7 @@ const DashPosts = () => {
                             </InputAdornment>
                         ),
                     }}
-                    label={"Search by Username, Email or ID"}
+                    label={"Search by ID or UserId"}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={(e) => {e.key === 'Enter' && handleSearch(e.target.value)}}
                     id="outlined-adornment-weight"  variant="filled"
