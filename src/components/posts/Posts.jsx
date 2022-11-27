@@ -21,34 +21,10 @@ const Posts = () => {
                         Authorization: `Bearer ${accessToken}`,
                     }
                 });
-                const data = await res.data.info.reverse();
-                await Promise.all(data?.map(async (post)=>{
-                    const fetchUser = async () => {
-                        try {
-                            const res = await api.get(`/user/getOne/${post.userId}`, {
-                                headers: {
-                                    Authorization: `Bearer ${accessToken}`,
-                                }
-                            });
-                            const data = await res.data.info;
-                            const rawPost = {
-                                id: post?._id,
-                                userId: post.userId,
-                                name: data.username,
-                                profilePic: data.avatar,
-                                img: post?.content?.img,
-                                desc: post?.content?.text,
-                                likes: post?.interaction?.likes,
-                                comments: post?.interaction?.comments,
-                                createdAt: post?.status?.createdAt,
-                            }
-                            setPosts((prev)=>[...prev, rawPost]);
-                        } catch (err) {
-                            console.log(err);
-                        }
-                    }
-                    await fetchUser();
-                }))
+                const data = await res.data.info;
+                const post = data.sort((p1, p2) => p1.status.createdAt < p2.status.createdAt ? 1 : -1);
+                console.log(post);
+                setPosts(data);
                 setLoading(false);
             } catch (err) {
                 console.log(err);
@@ -59,8 +35,8 @@ const Posts = () => {
     }, [])
 
     return <div className="posts">
-        {posts.map(post=>(
-            <Post post={post} key={post.id}/>
+        {posts.map((post, index)=>(
+            <Post rawPost={post} key={index}/>
         ))}
         {
             loading &&

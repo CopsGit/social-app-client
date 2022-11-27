@@ -130,24 +130,7 @@ const DashPosts = () => {
                 }
             })
             const post = res?.data?.info
-            const resUser = await api.get(`/user/getOne/${post.userId}`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                }
-            });
-
-            const rawPost = {
-                id: post?._id,
-                userId: post.userId,
-                name: resUser.data.info.username,
-                profilePic: resUser.data.info.avatar,
-                img: post?.content?.img,
-                desc: post?.content?.text,
-                likes: post?.interaction?.likes,
-                comments: post?.interaction?.comments,
-                createdAt: post?.status?.createdAt,
-            }
-            setCurPost(rawPost)
+            setCurPost(post)
             console.log(curPost)
             setLoading(false)
             setOpenView(true)
@@ -318,7 +301,7 @@ const DashPosts = () => {
                         }}
                     >
                         <Box className="posts">
-                        <Post post={curPost} key={curPost.id}/>
+                        <Post rawPost={curPost} key={curPost.id}/>
                         </Box>
                     </Dialog>
 

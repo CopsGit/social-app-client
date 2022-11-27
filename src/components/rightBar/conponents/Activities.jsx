@@ -19,7 +19,7 @@ const Activities = () => {
                 console.log(err);
             }
         }
-        fetchActivities().then(r => console.log(r));
+        fetchActivities().then();
     },[])
 
     const timeDifference = (createdAt) => {

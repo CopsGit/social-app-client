@@ -10,12 +10,24 @@ import {useContext, useEffect, useState} from "react";
 import api from "../../helpers/axiosSetting";
 import {AuthContext} from "../../context/authContext";
 
-const Post = ({ post }) => {
+const Post = ({ rawPost }) => {
     const [commentOpen, setCommentOpen] = useState(false);
     const [liked, setLiked] = useState(false);
-    const [likes, setLikes] = useState(post?.likes?.length);
+    const [likes, setLikes] = useState(rawPost?.interaction?.likes?.length);
     const accessToken = localStorage.getItem("accessToken");
     const {currentUser} = useContext(AuthContext);
+
+    const post = {
+        id: rawPost?._id,
+        userId: rawPost?.userId,
+        name: rawPost?.user?.username,
+        profilePic: rawPost?.user?.avatar,
+        img: rawPost?.content?.img,
+        desc: rawPost?.content?.text,
+        likes: rawPost?.interaction?.likes,
+        comments: rawPost?.interaction?.comments,
+        createdAt: rawPost?.status?.createdAt,
+    }
 
     const timeDifference = () => {
         const now = new Date();
@@ -107,7 +119,7 @@ const Post = ({ post }) => {
                         marginTop: "20px",
                     }} src={post.img} alt="" />
                 </div>
-                <div style={{display:'flex', alignItems:'center', gap:'20px'}} className="info" onClick={handleLike}>
+                <div style={{display:'flex', alignItems:'center', gap:'20px'}} className="info">
                     <div
                         style={{
                             display: "flex",
@@ -116,9 +128,11 @@ const Post = ({ post }) => {
                             cursor: "pointer",
                             fontSize: "14px",
                         }}
-                        className="item">
+                        className="item"
+                        onClick={handleLike}
+                    >
                         {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
-                        {likes} {post?.likes?.length > 1 ? "Likes" : "Like"}
+                        {likes} {likes > 1 ? "Likes" : "Like"}
                     </div>
                     <div
                         style={{

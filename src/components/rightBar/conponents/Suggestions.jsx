@@ -1,14 +1,16 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {AuthContext} from "../../../context/authContext";
-import {Alert, CircularProgress} from "@mui/material";
+import {Alert, CircularProgress, Typography} from "@mui/material";
 import api from "../../../helpers/axiosSetting";
+import {Skeleton} from "@mui/lab";
 
 const Suggestions = () => {
     const [suggestions, setSuggestions] = useState([]);
     const [successMessage, setSuccessMessage] = useState(false);
     const [errMessage, setErrMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const { currentUser, accessToken } = useContext(AuthContext);
+    const [showMore, setShowMore] = useState(false);
+    const accessToken = localStorage.getItem("accessToken");
 
     const handleFollow = async (id) => {
         // setLoading(true);
@@ -51,7 +53,7 @@ const Suggestions = () => {
         <>
             <span>Suggestions For You</span>
             {
-                suggestions.map((suggestion, index) => {
+                suggestions.slice(0, showMore ? 6 : 3).map((suggestion, index) => {
                     return <div className="user" key={index}>
                         <div className="userInfo">
                             <img
@@ -67,6 +69,23 @@ const Suggestions = () => {
                     </div>
                 })
             }
+            {
+                loading &&
+                <Typography component="div" variant={"h3"}>
+                    <Skeleton />
+                    <Skeleton />
+                    <Skeleton />
+                </Typography>
+            }
+            <Typography
+                sx={{
+                    display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2,
+                    cursor: 'pointer',
+                }}
+                onClick={() => setShowMore(!showMore)}
+            >
+                {showMore ? "Show Less" : "Show More"}
+            </Typography>
             {
                 errMessage.length > 0 &&
                 <Alert
@@ -101,9 +120,7 @@ const Suggestions = () => {
                     Done!
                 </Alert>
             }
-            {
-                loading && <CircularProgress />
-            }
+
         </>
     );
 };
