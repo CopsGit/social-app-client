@@ -6,7 +6,7 @@ import {Skeleton} from "@mui/lab";
 import Box from "@mui/material/Box";
 import {Typography} from "@mui/material";
 
-const Posts = () => {
+const Posts = ({profile}) => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const accessToken = localStorage.getItem("accessToken");

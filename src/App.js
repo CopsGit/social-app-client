@@ -3,42 +3,33 @@ import Register from "./pages/Register";
 import {
     createBrowserRouter,
     RouterProvider,
-    Outlet,
     Navigate,
 } from "react-router-dom";
-import Navbar from "./components/navBar/Navbar";
-import LeftBar from "./components/leftBar/LeftBar";
-import RightBar from "./components/rightBar/RightBar";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import "./style/style.scss";
-import {useContext} from "react";
-import { DarkModeContext } from "./context/darkModeContext";
+import {useContext, useEffect, useState} from "react";
 import { AuthContext } from "./context/authContext";
 import Dashboard from "./pages/Dashboard";
+import {Backdrop, CircularProgress} from "@mui/material";
+import Layout from "./pages/Layout";
+import LoadingPage from "./pages/LoadingPage";
 
 function App() {
     const {currentUser} = useContext(AuthContext);
-    const { darkMode } = useContext(DarkModeContext);
 
-    const Layout = () => {
-        return (
-            <div className={`theme-${darkMode ? "dark" : "light"}`}>
-                <Navbar />
-                <div style={{ display: "flex" }}>
-                    <LeftBar />
-                    <div style={{ flex: 6 }}>
-                        <Outlet />
-                    </div>
-                    <RightBar />
-                </div>
-            </div>
-        );
-    };
+    const [loading, setLoading] = useState(true);
+
+    useEffect(()=>{
+        if(currentUser){
+            setLoading(false);
+        }
+    },[currentUser])
+
 
     const ProtectedRoute = ({ children }) => {
         if (!currentUser) {
-            return <Navigate to="/login" />;
+            return <Navigate to="/login"/>;
         }
         return children;
     };
@@ -58,19 +49,17 @@ function App() {
             path: "/",
             element: (
                 <ProtectedRoute>
-                    <Layout />
+                    <Home />
                 </ProtectedRoute>
             ),
-            children: [
-                {
-                    path: "/",
-                    element: <Home />,
-                },
-                {
-                    path: "/profile/:id",
-                    element: <Profile />,
-                },
-            ],
+        },
+        {
+            path: "/profile/:id",
+            element: (
+                <ProtectedRoute>
+                    <Profile />
+                </ProtectedRoute>
+            ),
         },
         {
             path: "/login",
@@ -92,7 +81,8 @@ function App() {
 
     return (
         <div>
-            <RouterProvider router={router} />
+            {!loading && <RouterProvider router={router} />}
+            <LoadingPage loading={loading}/>
         </div>
     );
 }
