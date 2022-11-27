@@ -1,70 +1,98 @@
-# Getting Started with Create React App
+<h1 align="center">Social App Client</h1><br>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 
-## Available Scripts
+[![Npm Version](https://img.shields.io/node/v/@mui/material)](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+[![Npm Version](https://badge.fury.io/js/npm.svg)](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+![version](https://img.shields.io/badge/version-0.1.0-gree)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=shields)](https://github.com/CopsGit)
 
-In the project directory, you can run:
+Social App Client is a web project based on JavaScript, React.js. The base UI surface was designed by [LamaDev](https://github.com/safak/youtube2022/tree/react-social-ui). I redesign some of the UI with [Material UI Components](https://mui.com/). I also wrote a backend server [Social App Server](https://github.com/CopsGit/social-app-server) with Typescript, MongoDB, Express.
 
-### `npm start`
+### Dependencies
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* [Node.js](https://nodejs.org/en/)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Installation
 
-### `npm test`
+```bash
+git clone git@github.com:CopsGit/social-app-client.git
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Use the package manager [yarn](https://yarnpkg.com/getting-started/install) or [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to install packages.
 
-### `npm run build`
+```javascript
+yarn install
+```
+```javascript
+npm install
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Usage
+Create a .env file and add your social app backend server URL
+```javascript
+REACT_APP_API_URL=XXXXXXXXXXXXXXXXXXXXXXX
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Run one of the command below, and the project will be run at http://localhost:3000/
+```javascript
+yarn start
+```
+```javascript
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Finished
+- [x] Register
+- [x] Login
+- [x] Create Posts, likes
+- [x] Follow & Suggestions
+- [x] Recent activities
+- [x] Change Avatar
+- [x] Dashboard User page
+- [x] Dashboard Post page
 
-### `npm run eject`
+## TO-DO
+### New features
+- [ ] comment posts
+- [ ] edit posts & delete posts
+- [ ] friends. Online, offline, invisible status
+- [ ] dashboard activities
+- [ ] dashboard percentage changes (users, posts...)
+- [ ] Profile page
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Bugs & Improvements
+- [ ] Login fetch user data optimization
+- [ ] Posts sort by create time optimization
+- [ ] Activities listed on the user main page optimization (some needed, other don't)
+- [ ] responsive design optimization
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Authors
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Contributors names and contact info
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+[Copsgit](https://github.com/CopsGit)
 
-## Learn More
+## Version History
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* 0.1.0
+    * Initial Release
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Contributing
 
-### Code Splitting
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Please make sure to update tests as appropriate.
 
-### Analyzing the Bundle Size
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Acknowledgments
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Inspiration, code snippets, etc.
+* [Material UI Components](https://mui.com/)
+* [LamaDev](https://github.com/safak/youtube2022/tree/react-social-ui)
+* [Google](https://google.com)
+* [Stackoverflow](https://stackoverflow.com/)
+* [Reddit](https://www.reddit.com/)
