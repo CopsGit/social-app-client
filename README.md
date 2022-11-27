@@ -1,5 +1,6 @@
 <h1 align="center">Social App Client</h1><br>
 
+[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 
 [![Npm Version](https://img.shields.io/node/v/@mui/material)](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
