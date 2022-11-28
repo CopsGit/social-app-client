@@ -52,6 +52,8 @@ npm start
 - [x] Change Avatar
 - [x] Dashboard User page
 - [x] Dashboard Post page
+- [x] Profile page
+- [x] Posts sort by create time optimization
 
 ## TO-DO
 ### New features
@@ -60,11 +62,9 @@ npm start
 - [ ] friends. Online, offline, invisible status
 - [ ] dashboard activities
 - [ ] dashboard percentage changes (users, posts...)
-- [ ] Profile page
 
 ### Bugs & Improvements
 - [ ] Login fetch user data optimization
-- [ ] Posts sort by create time optimization
 - [ ] Activities listed on the user main page optimization (some needed, other don't)
 - [ ] responsive design optimization
 

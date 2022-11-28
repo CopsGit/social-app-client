@@ -3,6 +3,7 @@ import {AuthContext} from "../../../context/authContext";
 import api from "../../../helpers/axiosSetting";
 import {Typography} from "@mui/material";
 import {Skeleton} from "@mui/lab";
+import {Link} from "react-router-dom";
 
 const OnlineFriends = () => {
     const [friends, setFriends] = useState([]);
@@ -42,15 +43,17 @@ const OnlineFriends = () => {
         <>
             <span>Online Friends</span>
             {
-                friends.map((value, index) => <div className="user">
-                    <div className="userInfo" key={index}>
-                        <img
-                            src={value.avatar}
-                            alt=""
-                        />
-                        <div className="online" />
-                        <span>{value.username}</span>
-                    </div>
+                friends.map((value, index) => <div className="user" key={index}>
+                    <Link style={{textDecoration: 'none'}} to={`/profile/${value._id}`}>
+                        <div className="userInfo">
+                            <img
+                                src={value.avatar}
+                                alt=""
+                            />
+                            <div className="online"/>
+                            <span>{value.username}</span>
+                        </div>
+                    </Link>
                 </div>)
             }
             {

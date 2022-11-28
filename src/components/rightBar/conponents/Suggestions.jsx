@@ -3,6 +3,7 @@ import {AuthContext} from "../../../context/authContext";
 import {Alert, CircularProgress, Typography} from "@mui/material";
 import api from "../../../helpers/axiosSetting";
 import {Skeleton} from "@mui/lab";
+import {Link} from "react-router-dom";
 
 const Suggestions = () => {
     const [suggestions, setSuggestions] = useState([]);
@@ -10,6 +11,7 @@ const Suggestions = () => {
     const [errMessage, setErrMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const [showMore, setShowMore] = useState(false);
+    const [reload, setReload] = useState(false);
     const accessToken = localStorage.getItem("accessToken");
 
     const handleFollow = async (id) => {
@@ -24,10 +26,12 @@ const Suggestions = () => {
             })
             console.log(res);
             setSuccessMessage(true)
-            return window.location.reload()
+            setReload(true);
+            // return window.location.reload()
         } catch (e) {
             console.log(e)
             setErrMessage(e.message)
+            setReload(true);
         }
     }
 
@@ -38,23 +42,25 @@ const Suggestions = () => {
                 const res = await api.get('/follow/suggestion',{
                     headers: {Authorization: `Bearer ${accessToken}`}
                 })
-                console.log(res)
                 setSuggestions(res.data.info)
+                setReload(false)
             } catch (e) {
                 console.log(e)
                 setLoading(false)
+                setReload(false)
             }
             setLoading(false)
         }
         fetchSuggestions().then()
-    }, [])
+    }, [reload])
 
     return (
         <>
             <span>Suggestions For You</span>
             {
-                suggestions.slice(0, showMore ? 6 : 3).map((suggestion, index) => {
+                !loading && suggestions.slice(0, showMore ? 6 : 3).map((suggestion, index) => {
                     return <div className="user" key={index}>
+                        <Link style={{textDecoration: 'none'}} to={`/profile/${suggestion.id}`}>
                         <div className="userInfo">
                             <img
                                 src={suggestion.avatar}
@@ -62,6 +68,7 @@ const Suggestions = () => {
                             />
                             <span>{suggestion.username}</span>
                         </div>
+                        </Link>
                         <div className="buttons">
                             <button onClick={() => handleFollow(suggestion.id)}>follow</button>
                             <button>dismiss</button>
@@ -71,15 +78,15 @@ const Suggestions = () => {
             }
             {
                 loading &&
-                <Typography component="div" variant={"h3"}>
-                    <Skeleton />
-                    <Skeleton />
-                    <Skeleton />
+                <Typography component="div" variant={"h3"} sx={{lineHeight:'66.66px'}}>
+                    {[1,2,3,4,5,6].slice(0, showMore ? 6 : 3).map((item, index) => (
+                        <Skeleton key={index} />
+                        ))}
                 </Typography>
             }
             <Typography
                 sx={{
-                    display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2,
+                    display: 'flex', justifyContent: 'center', alignItems: 'center',
                     cursor: 'pointer',
                 }}
                 onClick={() => setShowMore(!showMore)}

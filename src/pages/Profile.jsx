@@ -10,12 +10,36 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../components/posts/Posts"
 import Layout from "./Layout";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../context/authContext";
+import api from "../helpers/axiosSetting";
+import {Backdrop, CircularProgress} from "@mui/material";
+import * as React from "react";
 
-const Profile = ({userId}) => {
-    const { currentUser } = useContext(AuthContext);
-    const [user, setUser] = useState(currentUser);
+const Profile = () => {
+    const [user, setUser] = useState(null);
+    const userId = window.location.pathname.split("/")[2];
+    const accessToken = localStorage.getItem("accessToken")
+    const [loading, setLoading] = useState(false);
+
+    useEffect(()=>{
+        setLoading(true)
+        const fetchUser = async () => {
+            try {
+                const res = await api.get(`/user/getOne/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    }
+                })
+                const data = await res.data.info;
+                setUser(data);
+                setLoading(false)
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        fetchUser().then();
+    },[])
 
     return (
         <Layout>
@@ -70,8 +94,16 @@ const Profile = ({userId}) => {
                             <MoreVertIcon />
                         </div>
                     </div>
-                    <Posts profile={user._id} />
+                    <Posts userId={userId} />
                 </div>
+                {
+                    loading && <Backdrop
+                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                        open={loading}
+                    >
+                        <CircularProgress color="inherit" />
+                    </Backdrop>
+                }
             </div>
         </Layout>
 
