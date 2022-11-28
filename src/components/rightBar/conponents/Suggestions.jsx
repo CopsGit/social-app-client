@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {AuthContext} from "../../../context/authContext";
-import {Alert, CircularProgress, Typography} from "@mui/material";
+import {Alert, Button, CircularProgress, Typography} from "@mui/material";
 import api from "../../../helpers/axiosSetting";
 import {Skeleton} from "@mui/lab";
 import {Link} from "react-router-dom";
@@ -24,14 +24,28 @@ const Suggestions = () => {
                     Authorization: `Bearer ${accessToken}`
                 }
             })
-            console.log(res);
             setSuccessMessage(true)
             setReload(true);
-            // return window.location.reload()
         } catch (e) {
             console.log(e)
             setErrMessage(e.message)
             setReload(true);
+        }
+    }
+
+    const handleDislike = async (id) => {
+        try {
+            const res = await api.post('/follow/dislike', {
+                userId: id
+            }, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+            setSuccessMessage(true)
+            setReload(true);
+        } catch (e) {
+            console.log(e)
         }
     }
 
@@ -70,8 +84,12 @@ const Suggestions = () => {
                         </div>
                         </Link>
                         <div className="buttons">
-                            <button onClick={() => handleFollow(suggestion.id)}>follow</button>
-                            <button>dismiss</button>
+                            <Button loading variant="soft"  onClick={() => handleFollow(suggestion.id)}>
+                                Follow
+                            </Button>
+                            <Button loading variant="soft"  onClick={() => handleDislike(suggestion.id)}>
+                                Dislike
+                            </Button>
                         </div>
                     </div>
                 })
