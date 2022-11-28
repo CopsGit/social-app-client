@@ -54,7 +54,7 @@ function App() {
             ),
         },
         {
-            path: "/profile/:id",
+            path: "/profile/:userId",
             element: (
                 <ProtectedRoute>
                     <Profile />

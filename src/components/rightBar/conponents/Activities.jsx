@@ -60,7 +60,7 @@ const Activities = () => {
     return (
         <div>
             <span>Latest Activities</span>
-            {activities.map(activity=>(
+            {!loading && activities.map(activity=>(
                 <div key={activity._id} className="user">
                     <div className="userInfo">
                         <Link style={{textDecoration: 'none'}} to={`/profile/${activity.userId}`}>
@@ -81,7 +81,7 @@ const Activities = () => {
             ))}
             {
                 loading &&
-                <Typography component="div" variant={"h3"} sx={{lineHeight:'66.66px'}}>
+                <Typography component="div" variant={"h3"} sx={{lineHeight:'66.66px', margin:'18.36px 0'}}>
                     {[1,2,3,4,5].map((item, index) => (
                         <Skeleton key={index} />
                     ))}
