@@ -8,6 +8,12 @@ const DashLogout = () => {
     const handleBack = () => {
         return navigate('/')
     }
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken')
+        navigate('/login')
+    }
+
     return (
         <Grid container>
             <Grid sx={{
@@ -29,7 +35,7 @@ const DashLogout = () => {
                     margin: '1rem 0',
                     backgroundColor: "#c1beff"
                 }}
-                // onClick={() => signOut(auth)}
+                onClick={handleLogout}
                 >Log Out</Button>
             </Grid>
 

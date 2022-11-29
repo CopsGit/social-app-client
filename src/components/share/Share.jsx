@@ -10,6 +10,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import {useDispatch, useSelector} from "react-redux";
 import {saveReload} from "../../redux/slices/postSlice";
+import {Textarea} from "@mui/joy";
 
 const Share = () => {
     const {currentUser, accessToken} = useContext(AuthContext)
@@ -56,7 +57,7 @@ const Share = () => {
     const handleShare = async (e) => {
         setLoading(true);
         setProgress(0)
-        const text = document.getElementById("text").value;
+        const text = inputValue;
         let file = document.getElementById("file").files[0];
         if (file) {
             let fileReader = new FileReader();
@@ -78,11 +79,11 @@ const Share = () => {
                     setLoading(false);
                     setInputValue("");
                     setCurFile(null);
-                    setProgress(100)
+                    // setProgress(100)
                 } catch (e) {
                     console.log(e);
                     setLoading(false);
-                    setProgress(100)
+                    // setProgress(100)
                 }
             }
         } else {
@@ -98,9 +99,12 @@ const Share = () => {
                     }
                 })
                 setLoading(false);
+                setInputValue("");
+                setCurFile(null);
             } catch (e) {
                 console.log(e);
                 setLoading(false);
+                setProgress(100)
             }
         }
     }
@@ -117,7 +121,29 @@ const Share = () => {
                         src={currentUser?.avatar}
                         alt=""
                     />
-                    <input id='text' value={inputValue} onChange={(e) => setInputValue(e.target.value)} type="text" placeholder={`What's on your mind ${currentUser?.username}?`} />
+                    <Box
+                        sx={{
+                            py: 2,
+                            display: 'grid',
+                            // gap: 2,
+                            alignItems: 'center',
+                            flexWrap: 'wrap',
+                            width: '100%',
+                        }}
+                    >
+                        <Textarea
+                            label="Plain"
+                            placeholder={`What's on your mind ${currentUser?.username}?`}
+                            variant="plain"
+                            id='text'
+                            maxRows={9}
+                            value={inputValue}
+                            className='input'
+                            onChange={(e) => {setInputValue(e.target.value)
+                                console.log(typeof(e.target.value))
+                            }}
+                        />
+                    </Box>
                 </div>
                 <Box sx={{ width: '100%', marginBottom:1, color:'#808080' }}>
                     <LinearProgress

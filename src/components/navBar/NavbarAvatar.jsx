@@ -62,10 +62,6 @@ const NavbarAvatar = () => {
         navigate('/login')
     }
 
-    const handleGet = (e) =>{
-
-    }
-
     return (
         <>
                 <img
@@ -80,9 +76,10 @@ const NavbarAvatar = () => {
                 />
                 <span>{currentUser?.name}</span>
             <Dialog
-                fullScreen={fullScreen}
+                fullWidth={true}
                 open={open}
                 onClose={handleClose}
+                maxWidth={"sm"}
                 aria-labelledby="responsive-dialog-title"
             >
                 <DialogTitle id="responsive-dialog-title">
@@ -90,20 +87,27 @@ const NavbarAvatar = () => {
                 </DialogTitle>
                         <form
                             onSubmit={handleSubmit}
-                            style={{border: "1px solid black"}}
+                            style={{padding: "15px"}}
                         >
-                            <input type="file"
+                            <input style={{display: "none"}}
+                                   type="file"
                                    id="avatar" name="avatar"
                                    accept="image/png, image/jpeg"/>
-                            <label htmlFor="file">
-                                <img src={AddAvatar} alt="" />
-                                <span>Add an avatar (image type only)</span>
+                            <label htmlFor="file"
+                                   style={{
+                                       display: "flex", alignItems: 'center',
+                                       justifyContent: 'center', flexDirection: 'column',
+                                   }}>
+                                <img style={{cursor: 'pointer'}} height='50px' width='50px' src={AddAvatar} alt="" />
+                                <span>Avatar</span>
                             </label>
-                            <button disabled={loading} >
+                            <Button style={{
+                                width: '100%',
+                                margin: 'auto'
+                            }} disabled={loading} >
                                 Update
-                            </button>
+                            </Button>
                         </form>
-                    {/*<p>{document.getElementById("file")}</p>*/}
                 <Box justifyContent={"space-between"} display={"flex"}>
                     <Button onClick={handleLogout}>
                         logout

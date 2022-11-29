@@ -23,13 +23,16 @@
           object-fit: cover;
         }
 
+        .JoyTextarea-root {
+          --Textarea-focusedHighlight : #808080;
+        }
+
         input {
           border: none;
           outline: none;
-          padding: 20px 10px;
           background-color: transparent;
-          width: 60%;
           color: themed("textColor");
+          --Textarea-focusedHighlight: none;
         }
       }
 

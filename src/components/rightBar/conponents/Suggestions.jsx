@@ -84,10 +84,13 @@ const Suggestions = () => {
                         </div>
                         </Link>
                         <div className="buttons">
-                            <Button loading variant="soft"  onClick={() => handleFollow(suggestion.id)}>
+                            <Button
+                                variant="soft"
+                                onClick={() => handleFollow(suggestion.id)}
+                            >
                                 Follow
                             </Button>
-                            <Button loading variant="soft"  onClick={() => handleDislike(suggestion.id)}>
+                            <Button variant="soft"  onClick={() => handleDislike(suggestion.id)}>
                                 Dislike
                             </Button>
                         </div>

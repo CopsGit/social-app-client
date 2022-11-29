@@ -111,13 +111,13 @@ const Post = ({ rawPost }) => {
                     <MoreHorizIcon />
                 </div>
                 <div className="content" style={{margin:'20px 0'}}>
-                    <p>{post.desc}</p>
-                    <img style={{
+                    <p style={{whiteSpace: 'pre-line', lineHeight: '1.5rem'}}>{post.desc}</p>
+                    {post?.img && <img style={{
                         width: "100%",
                         maxHeight: "500px",
                         objectFit: "cover",
                         marginTop: "20px",
-                    }} src={post.img} alt="" />
+                    }} src={post.img} alt="" />}
                 </div>
                 <div style={{display:'flex', alignItems:'center', gap:'20px'}} className="info">
                     <div
