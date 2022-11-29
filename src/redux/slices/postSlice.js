@@ -1,7 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-    reload: false,
+    reloadPost: false,
+    reloadComment: false,
     showLeftBar: true,
 }
 
@@ -9,7 +10,10 @@ export const postSlice = createSlice({
     name: 'post',
     initialState,
     reducers: {
-        saveReload: (state, action) => {
+        saveReloadPost: (state, action) => {
+            state.reload = action.payload
+        },
+        saveReloadComment: (state, action) => {
             state.reload = action.payload
         },
         saveShowLeftBar: (state, action) => {
@@ -21,6 +25,7 @@ export const postSlice = createSlice({
 export default postSlice.reducer
 
 export const {
-    saveReload,
+    saveReloadPost,
+    saveReloadComment,
     saveShowLeftBar
 } = postSlice.actions

@@ -66,8 +66,6 @@ const NavbarAvatar = () => {
                     alt=""
                     onClick={handleOpen}
                     style={{
-                        // border: '1px solid black',
-                        // borderRadius: '5px',
                         cursor: 'pointer'
                     }}
                 />
@@ -105,7 +103,7 @@ const NavbarAvatar = () => {
                                 Update
                             </Button>
                         </form>
-                <Box justifyContent={"space-between"} display={"flex"}>
+                <Box justifyContent={"space-between"} display={"flex"} >
                     <Button onClick={handleLogout}>
                         logout
                     </Button>

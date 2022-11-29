@@ -6,13 +6,13 @@ import {Skeleton} from "@mui/lab";
 import Box from "@mui/material/Box";
 import {Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {saveReload} from "../../redux/slices/postSlice";
+import {saveReloadPost} from "../../redux/slices/postSlice";
 
 const Posts = ({userId}) => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const accessToken = localStorage.getItem("accessToken");
-    const reload = useSelector(state => state.post.reload)
+    const reloadPost = useSelector(state => state.post.reloadPost)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -29,11 +29,11 @@ const Posts = ({userId}) => {
                     // const post = data.sort((p1, p2) => p1.status.createdAt < p2.status.createdAt ? 1 : -1);
                     setPosts(data);
                     setLoading(false);
-                    dispatch(saveReload(false))
+                    dispatch(saveReloadPost(false))
                 } catch (err) {
                     console.log(err);
                     setLoading(false);
-                    dispatch(saveReload(false))
+                    dispatch(saveReloadPost(false))
                 }
             } else {
                 try {
@@ -46,17 +46,17 @@ const Posts = ({userId}) => {
                     // const post = data.sort((p1, p2) => p1.status.createdAt < p2.status.createdAt ? 1 : -1);
                     setPosts(data);
                     setLoading(false);
-                    dispatch(saveReload(false))
+                    dispatch(saveReloadPost(false))
                 } catch (err) {
                     console.log(err);
                     setLoading(false);
-                    dispatch(saveReload(false))
+                    dispatch(saveReloadPost(false))
                 }
             }
 
         }
         fetchPosts().then();
-    }, [reload])
+    }, [reloadPost])
 
     return <div className="posts">
         {posts.map((post, index) => (

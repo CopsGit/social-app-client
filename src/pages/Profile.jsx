@@ -17,7 +17,7 @@ import {Backdrop, CircularProgress} from "@mui/material";
 import * as React from "react";
 import {useParams} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {saveReload} from "../redux/slices/postSlice";
+import {saveReloadPost} from "../redux/slices/postSlice";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -29,7 +29,7 @@ const Profile = () => {
 
     useEffect(()=>{
         setLoading(true)
-        dispatch(saveReload(true))
+        dispatch(saveReloadPost(true))
         const fetchUser = async () => {
             try {
                 const res = await api.get(`/user/getOne/${userId}`, {

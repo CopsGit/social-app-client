@@ -3,14 +3,15 @@ import api from "../../../helpers/axiosSetting";
 import {Typography} from "@mui/material";
 import {Skeleton} from "@mui/lab";
 import {useDispatch, useSelector} from "react-redux";
-import {saveReload} from "../../../redux/slices/postSlice";
+import {saveReloadPost} from "../../../redux/slices/postSlice";
 import {Link} from "react-router-dom";
 
 const Activities = () => {
     const accessToken = localStorage.getItem("accessToken");
     const [activities, setActivities] = useState([]);
     const [loading, setLoading] = useState(false);
-    const reload = useSelector(state => state.post.reload)
+    const reloadPost = useSelector(state => state.post.reloadPost)
+    const reloadComment = useSelector(state => state.post.reloadComment)
     const dispatch = useDispatch()
 
     useEffect(()=>{
@@ -25,14 +26,14 @@ const Activities = () => {
                 const data = await res.data.info;
                 setActivities(data.slice(0, 5));
                 setLoading(false);
-                dispatch(saveReload(false))
+                dispatch(saveReloadPost(false))
             } catch (err) {
                 console.log(err);
                 setLoading(false);
             }
         }
         fetchActivities().then();
-    },[reload])
+    },[reloadPost, reloadComment])
 
     const timeDifference = (createdAt) => {
         const now = new Date();

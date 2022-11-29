@@ -9,7 +9,7 @@ import {Button, LinearProgress, Popper} from "@mui/material";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import {useDispatch} from "react-redux";
-import {saveReload} from "../../redux/slices/postSlice";
+import {saveReloadPost} from "../../redux/slices/postSlice";
 import {Textarea} from "@mui/joy";
 
 const Share = () => {
@@ -184,7 +184,7 @@ const Share = () => {
                             <span>Tag Friends</span>
                         </div>
                     </div>
-                    <div className="right" onClick={e=>dispatch(saveReload(true))}>
+                    <div className="right" onClick={e=>dispatch(saveReloadPost(true))}>
                         <Button disabled={loading} onClick={e=>handleShare(e)}>Share</Button>
                     </div>
                 </div>

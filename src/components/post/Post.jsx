@@ -14,6 +14,7 @@ const Post = ({ rawPost }) => {
     const [commentOpen, setCommentOpen] = useState(false);
     const [liked, setLiked] = useState(false);
     const [likes, setLikes] = useState(rawPost?.interaction?.likes?.length);
+    const [commentsAmount, setCommentsAmount] = useState(rawPost?.interaction?.comments?.length);
     const accessToken = localStorage.getItem("accessToken");
     const {currentUser} = useContext(AuthContext);
 
@@ -144,7 +145,7 @@ const Post = ({ rawPost }) => {
                         }}
                         className="item" onClick={() => setCommentOpen(!commentOpen)}>
                         <TextsmsOutlinedIcon />
-                        {post?.comments?.length} {post?.comments?.length > 1 ? "Comments" : "Comment"}
+                        {commentsAmount} {commentsAmount > 1 ? "Comments" : "Comment"}
                     </div>
                     <div
                         style={{
@@ -159,7 +160,7 @@ const Post = ({ rawPost }) => {
                         Share
                     </div>
                 </div>
-                {commentOpen && <Comments post={post}/>}
+                {commentOpen && <Comments post={post} commentsAmount={commentsAmount} {...{setCommentsAmount}}/>}
             </div>
         </div>
     );
