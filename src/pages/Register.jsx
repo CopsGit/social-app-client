@@ -38,7 +38,6 @@ const Register = () => {
                         username,
                         avatar: blob
                     })
-                    console.log(res)
                     setLoading(false)
                     navigate("/login")
                     window.location.reload()

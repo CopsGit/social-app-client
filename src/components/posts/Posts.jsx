@@ -14,14 +14,12 @@ const Posts = ({userId}) => {
     const accessToken = localStorage.getItem("accessToken");
     const reload = useSelector(state => state.post.reload)
     const dispatch = useDispatch()
-    //TEMPORARY
-    console.log(reload)
 
-    useEffect(()=>{
+    useEffect(() => {
         setLoading(true);
         const fetchPosts = async () => {
-            if(userId){
-                try{
+            if (userId) {
+                try {
                     const res = await api.get(`/post/${userId}`, {
                         headers: {
                             Authorization: `Bearer ${accessToken}`,
@@ -29,7 +27,6 @@ const Posts = ({userId}) => {
                     });
                     const data = await res.data.info;
                     const post = data.sort((p1, p2) => p1.status.createdAt < p2.status.createdAt ? 1 : -1);
-                    console.log(post);
                     setPosts(data);
                     setLoading(false);
                     dispatch(saveReload(false))
@@ -39,7 +36,7 @@ const Posts = ({userId}) => {
                     dispatch(saveReload(false))
                 }
             } else {
-                try{
+                try {
                     const res = await api.get("/post/all", {
                         headers: {
                             Authorization: `Bearer ${accessToken}`,
@@ -47,7 +44,6 @@ const Posts = ({userId}) => {
                     });
                     const data = await res.data.info;
                     const post = data.sort((p1, p2) => p1.status.createdAt < p2.status.createdAt ? 1 : -1);
-                    console.log(post);
                     setPosts(data);
                     setLoading(false);
                     dispatch(saveReload(false))
@@ -63,17 +59,17 @@ const Posts = ({userId}) => {
     }, [reload])
 
     return <div className="posts">
-        {posts.map((post, index)=>(
+        {posts.map((post, index) => (
             <Post rawPost={post} key={index}/>
         ))}
         {
             loading &&
-            [1,2,3,4,5,6].map((item, index) => (
-            <Box key={index}>
-                <Typography component="div" variant={"h1"}>
-                    <Skeleton />
-                </Typography>
-            </Box>
+            [1, 2, 3, 4, 5, 6].map((item, index) => (
+                <Box key={index}>
+                    <Typography component="div" variant={"h1"}>
+                        <Skeleton/>
+                    </Typography>
+                </Box>
             ))
         }
     </div>;

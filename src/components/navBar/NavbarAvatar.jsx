@@ -40,7 +40,6 @@ const NavbarAvatar = () => {
             fileReader.onload = async (e) => {
                 const blob = e.target.result
                 try {
-                    console.log(blob)
                     const res = await api.post('/user/auth/update', {
                         avatar: blob
                     }, {

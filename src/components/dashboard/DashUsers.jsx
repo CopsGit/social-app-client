@@ -151,7 +151,6 @@ const DashUsers = () => {
 
     const handleUpdateAll = async (selected) => {
         setLoading(true)
-        console.log(selected)
         try {
             await Promise.all(selected?.map(async (id) => {
                 const res = await api.post('/user/auth/update', {
@@ -179,7 +178,7 @@ const DashUsers = () => {
                     selected[index] = newRow;
                 }
             })
-            // console.log("111111111",newRow)
+
         };
 
     const handleClose =()=>{

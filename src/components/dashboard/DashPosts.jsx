@@ -131,10 +131,8 @@ const DashPosts = () => {
             })
             const post = res?.data?.info
             setCurPost(post)
-            console.log(curPost)
             setLoading(false)
             setOpenView(true)
-            console.log(openView)
         } catch (err) {
             setErrMessage(err)
             setLoading(false)
@@ -143,7 +141,6 @@ const DashPosts = () => {
 
     const handleUpdateAll = async (selected) => {
         setLoading(true)
-        console.log(selected)
         try {
             await Promise.all(selected?.map(async (id) => {
                 const res = await api.post('/user/auth/update', {
@@ -171,7 +168,6 @@ const DashPosts = () => {
                 selected[index] = newRow;
             }
         })
-        // console.log("111111111",newRow)
     };
 
     const handleClose =()=>{

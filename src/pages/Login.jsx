@@ -25,7 +25,6 @@ const Login = () => {
                 password
             })
             await localStorage.setItem('accessToken', res.data.accessToken)
-            console.log(res.data.accessToken)
             setLoading(false)
             navigate("/")
             window.location.reload()

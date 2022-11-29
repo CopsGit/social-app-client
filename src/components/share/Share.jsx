@@ -23,10 +23,10 @@ const Share = () => {
     useEffect(() => {
         const timer = setInterval(() => {
             setProgress((oldProgress) => {
-                const diff = Math.random() * 10;
+                const diff = Math.random() * 5;
                 return Math.min(oldProgress + diff, 100);
             });
-        }, 100);
+        }, 200);
 
         return () => {
             clearInterval(timer);
@@ -44,7 +44,6 @@ const Share = () => {
             }
 
             let fileLabel = document.getElementById("fileLabel")
-            console.log(fileLabel)
             setAnchorEl(fileLabel);
         } else {
             setCurFile(null)
@@ -58,9 +57,7 @@ const Share = () => {
         setLoading(true);
         setProgress(0)
         const text = document.getElementById("text").value;
-        console.log(text);
         let file = document.getElementById("file").files[0];
-        console.log(file);
         if (file) {
             let fileReader = new FileReader();
             fileReader.readAsDataURL(file);
