@@ -1,6 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {AuthContext} from "../../../context/authContext";
-import {Alert, Button, CircularProgress, Typography} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Alert, Button, Typography} from "@mui/material";
 import api from "../../../helpers/axiosSetting";
 import {Skeleton} from "@mui/lab";
 import {Link} from "react-router-dom";
@@ -17,7 +16,7 @@ const Suggestions = () => {
     const handleFollow = async (id) => {
         // setLoading(true);
         try {
-            const res = await api.post('/follow', {
+            await api.post('/follow', {
                 userId: id
             }, {
                 headers: {
@@ -35,7 +34,7 @@ const Suggestions = () => {
 
     const handleDislike = async (id) => {
         try {
-            const res = await api.post('/follow/dislike', {
+            await api.post('/follow/dislike', {
                 userId: id
             }, {
                 headers: {

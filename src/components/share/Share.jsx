@@ -5,10 +5,10 @@ import Friend from "../../assets/friend.png";
 import {useContext, useEffect, useState} from "react";
 import { AuthContext } from "../../context/authContext";
 import api from "../../helpers/axiosSetting";
-import {Backdrop, CircularProgress, LinearProgress, Popper} from "@mui/material";
+import {Button, LinearProgress, Popper} from "@mui/material";
 import * as React from "react";
 import Box from "@mui/material/Box";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {saveReload} from "../../redux/slices/postSlice";
 import {Textarea} from "@mui/joy";
 
@@ -65,7 +65,7 @@ const Share = () => {
             fileReader.onload = async (e) => {
                 const blob = e.target.result
                 try{
-                    const res = await api.post("/post/create", {
+                    await api.post("/post/create", {
                         content: {
                             text,
                             avatar: currentUser.avatar,
@@ -88,7 +88,7 @@ const Share = () => {
             }
         } else {
             try{
-                const res = await api.post("/post/create", {
+                await api.post("/post/create", {
                     content: {
                         text,
                         avatar: currentUser.avatar,
@@ -109,9 +109,9 @@ const Share = () => {
         }
     }
 
-    const handleClose = () => {
-        setLoading(false);
-    }
+    // const handleClose = () => {
+    //     setLoading(false);
+    // }
 
     return (
         <div className="share">
@@ -185,7 +185,7 @@ const Share = () => {
                         </div>
                     </div>
                     <div className="right" onClick={e=>dispatch(saveReload(true))}>
-                        <button onClick={e=>handleShare(e)}>Share</button>
+                        <Button disabled={loading} onClick={e=>handleShare(e)}>Share</Button>
                     </div>
                 </div>
             </div>

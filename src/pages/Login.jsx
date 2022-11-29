@@ -1,7 +1,7 @@
-import {useContext, useState} from "react";
+import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import "../style/login.scss";
-import {Alert, AlertTitle, Backdrop, Box, CircularProgress} from "@mui/material";
+import {Alert, Backdrop, Box, CircularProgress} from "@mui/material";
 import api from "../helpers/axiosSetting";
 
 const Login = () => {

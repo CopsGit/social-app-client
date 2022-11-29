@@ -1,5 +1,5 @@
-import React, {useRef, useState} from "react";
-import { Input, TextField } from "@material-ui/core";
+import React, {useState} from "react";
+import { Input } from "@material-ui/core";
 
 
 
@@ -7,7 +7,6 @@ import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
 import {Button} from "@mui/material";
 
 const Address = ({chooseAddress}) => {
-    // const inputRef = useRef(null);
     const [country, setCountry] = useState("US");
     const { ref: materialRef } = usePlacesWidget({
         apiKey: process.env.REACT_APP_GOOGLE_API_KEY,

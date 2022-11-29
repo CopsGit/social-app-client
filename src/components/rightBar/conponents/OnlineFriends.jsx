@@ -1,5 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {AuthContext} from "../../../context/authContext";
+import React, {useEffect, useState} from 'react';
 import api from "../../../helpers/axiosSetting";
 import {Typography} from "@mui/material";
 import {Skeleton} from "@mui/lab";

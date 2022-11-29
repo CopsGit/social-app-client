@@ -1,21 +1,15 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import '../../../style/dashboard.scss'
 import { faker } from '@faker-js/faker';
-// @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
-// components
-import Iconify from '../components/iconify';
 import AppWidgetSummary from "./components/AppWidgetSummary";
 import AppWebsiteVisits from "./components/AppWebsiteVisits";
 import AppCurrentVisits from "./components/AppCurrentVisits";
 import AppConversionRates from "./components/AppConversionRates";
 import AppCurrentSubject from "./components/AppCurrentSubject";
-import AppNewsUpdate from "./components/AppNewsUpdate";
 import AppOrderTimeline from "./components/AppOrderTimeline";
-import AppTrafficBySite from "./components/AppTrafficBySite";
 import AppTasks from "./components/AppTasks";
-// sections
 
 
 

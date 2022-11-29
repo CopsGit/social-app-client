@@ -4,7 +4,6 @@ import {
     Button,
     Dialog,
     DialogTitle,
-    useMediaQuery,
     useTheme
 } from "@mui/material";
 import {AuthContext} from "../../context/authContext";
@@ -17,8 +16,6 @@ const NavbarAvatar = () => {
     const { currentUser} = useContext(AuthContext);
     const navigate = useNavigate()
     const [open, setOpen] = React.useState(false);
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const [loading, setLoading] = useState(false);
     const accessToken = localStorage.getItem('accessToken');
 
@@ -40,7 +37,7 @@ const NavbarAvatar = () => {
             fileReader.onload = async (e) => {
                 const blob = e.target.result
                 try {
-                    const res = await api.post('/user/auth/update', {
+                    await api.post('/user/auth/update', {
                         avatar: blob
                     }, {
                         headers: {

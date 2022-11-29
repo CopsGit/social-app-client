@@ -1,10 +1,9 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Alert, Backdrop, Button, CircularProgress, Dialog, InputAdornment, TextField, Typography} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-import {AuthContext} from "../../context/authContext";
 import api from "../../helpers/axiosSetting";
 import Post from "../post/Post";
 import "../../style/posts.scss";
@@ -17,7 +16,7 @@ const DashPosts = () => {
     const [errMessage, setErrMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState(false);
     const [inputValue, setInputValue] = useState("");
-    const { currentUser, accessToken } = useContext(AuthContext);
+    const accessToken = localStorage.getItem("accessToken");
     const [openView, setOpenView] = useState(false);
     const [curPost, setCurPost] = useState(null);
 
@@ -143,7 +142,7 @@ const DashPosts = () => {
         setLoading(true)
         try {
             await Promise.all(selected?.map(async (id) => {
-                const res = await api.post('/user/auth/update', {
+                await api.post('/user/auth/update', {
                     id: id.id,
                     isActive: id.isActive,
                     isStaff: id.isStaff,

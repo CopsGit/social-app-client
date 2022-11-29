@@ -76,7 +76,7 @@ const Post = ({ rawPost }) => {
 
     const handleLike = async () => {
         try{
-            const res = await api.post(`/post/like/${post.id}`, {}, {
+            await api.post(`/post/like/${post.id}`, {}, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 }

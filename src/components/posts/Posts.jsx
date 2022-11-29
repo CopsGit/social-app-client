@@ -26,7 +26,7 @@ const Posts = ({userId}) => {
                         }
                     });
                     const data = await res.data.info;
-                    const post = data.sort((p1, p2) => p1.status.createdAt < p2.status.createdAt ? 1 : -1);
+                    // const post = data.sort((p1, p2) => p1.status.createdAt < p2.status.createdAt ? 1 : -1);
                     setPosts(data);
                     setLoading(false);
                     dispatch(saveReload(false))
@@ -43,7 +43,7 @@ const Posts = ({userId}) => {
                         }
                     });
                     const data = await res.data.info;
-                    const post = data.sort((p1, p2) => p1.status.createdAt < p2.status.createdAt ? 1 : -1);
+                    // const post = data.sort((p1, p2) => p1.status.createdAt < p2.status.createdAt ? 1 : -1);
                     setPosts(data);
                     setLoading(false);
                     dispatch(saveReload(false))

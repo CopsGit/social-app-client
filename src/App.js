@@ -11,8 +11,6 @@ import "./style/style.scss";
 import {useContext, useEffect, useState} from "react";
 import { AuthContext } from "./context/authContext";
 import Dashboard from "./pages/Dashboard";
-import {Backdrop, CircularProgress} from "@mui/material";
-import Layout from "./pages/Layout";
 import LoadingPage from "./pages/LoadingPage";
 
 function App() {

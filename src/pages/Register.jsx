@@ -32,7 +32,7 @@ const Register = () => {
             fileReader.onload = async (e) => {
                 const blob = e.target.result
                 try {
-                    const res = await api.post('/user/auth/register', {
+                    await api.post('/user/auth/register', {
                         email,
                         password,
                         username,

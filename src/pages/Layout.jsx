@@ -1,7 +1,6 @@
 import React, {useContext} from 'react';
 import Navbar from "../components/navBar/Navbar";
 import LeftBar from "../components/leftBar/LeftBar";
-import {Outlet} from "react-router-dom";
 import RightBar from "../components/rightBar/RightBar";
 import {DarkModeContext} from "../context/darkModeContext";
 import {useSelector} from "react-redux";

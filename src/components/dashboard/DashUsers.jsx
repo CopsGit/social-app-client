@@ -1,10 +1,9 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Alert, Backdrop, Button, CircularProgress, InputAdornment, TextField, Typography} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-import {AuthContext} from "../../context/authContext";
 import api from "../../helpers/axiosSetting";
 
 
@@ -16,7 +15,7 @@ const DashUsers = () => {
     const [errMessage, setErrMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState(false);
     const [inputValue, setInputValue] = useState("");
-    const { currentUser, accessToken } = useContext(AuthContext);
+    const accessToken = localStorage.getItem("accessToken");
 
     useEffect(() => {
         setLoading(true)
@@ -105,49 +104,7 @@ const DashUsers = () => {
             minWidth: 150,
             editable: true,
         },
-        // {
-        //     field: "action",
-        //     headerName: "Action",
-        //     flex: 0.3,
-        //     minWidth: 100,
-        //     renderCell: (params) => {
-        //         // console.log(params);
-        //         return (
-        //             <>
-        //                 <Button
-        //                     onClick={() => {
-        //                         // setUserId(params?.id)
-        //                         handleUpdate(params).then(r => setSuccessMessage(true))
-        //                     }}
-        //                     variant="contained"
-        //                     sx={{margin:'0 10px', color:'#ffffff', backgroundColor:'#c1beff'}}
-        //                 >Update</Button>
-        //             </>
-        //         );
-        //     }
-        // },
     ];
-
-    // const handleUpdate = async (params) => {
-    //     setLoading(true)
-    //     try {
-    //         console.log(params)
-    //         const res = await api.post('/user/auth/update', {
-    //             id: params?.id,
-    //             isActive: params?.row.isActive,
-    //             isStaff: params?.row.isStaff,
-    //         },{
-    //             headers: {
-    //                 Authorization: `Bearer ${accessToken}`
-    //             }
-    //         })
-    //         res && setSuccessMessage(true)
-    //         setLoading(false)
-    //     } catch (err) {
-    //         setErrMessage(err)
-    //         setLoading(false)
-    //     }
-    // }
 
     const handleUpdateAll = async (selected) => {
         setLoading(true)

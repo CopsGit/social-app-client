@@ -4,8 +4,8 @@ import { AuthContext } from "../../context/authContext";
 
 const Comments = ({post}) => {
     const { currentUser } = useContext(AuthContext);
-    //Temporary
-    const comments = [
+
+    post = [
         {
             id: 1,
             desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem nequeaspernatur ullam aperiam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem nequeaspernatur ullam aperiam",
@@ -30,7 +30,7 @@ const Comments = ({post}) => {
                 <input type="text" placeholder="write a comment" />
                 <button>Send</button>
             </div>
-            {comments.map((comment, index) => (
+            {post.map((comment, index) => (
                 <div className="comment" key={index}>
                     <img src={comment.profilePicture} alt="" />
                     <div className="info">
