@@ -9,6 +9,8 @@ import Comments from "../comments/Comments";
 import {useContext, useEffect, useState} from "react";
 import api from "../../helpers/axiosSetting";
 import {AuthContext} from "../../context/authContext";
+import {Typography} from "@mui/material";
+import Box from "@mui/material/Box";
 
 const Post = ({ rawPost }) => {
     const [commentOpen, setCommentOpen] = useState(false);
@@ -91,36 +93,36 @@ const Post = ({ rawPost }) => {
 
     return (
         <div className="post">
-            <div style={{padding: '20px'}} className='container'>
-                <div style={{display: 'flex', alignItems:'center', justifyContent:'space-between'}} className='user'>
-                    <div style={{display:'flex', gap:'20px'}} className='userinfo'>
-                        <img style={{height: '40px', width:'40px', borderRadius: "50%", objectFit:"cover"}}
-                            src={post.profilePic} alt="" />
+            {rawPost && <div style={{padding: '20px'}} className='container'>
+                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}} className='user'>
+                    <div style={{display: 'flex', gap: '20px'}} className='userinfo'>
+                        <img style={{height: '40px', width: '40px', borderRadius: "50%", objectFit: "cover"}}
+                             src={post.profilePic} alt=""/>
                         <div style={{display: "flex", flexDirection: "column",}} className='details'
                         >
                             <Link
                                 to={`/profile/${post.userId}`}
-                                style={{ textDecoration: "none", color: "inherit" }}
+                                style={{textDecoration: "none", color: "inherit"}}
                             >
                                 <span className='name' style={{fontWeight: "500",}}>{post.name}</span>
                             </Link>
-                            <span className='date' style={{fontSize:'12px'}}>
+                            <span className='date' style={{fontSize: '12px'}}>
                                 {timeDifference()}
                             </span>
                         </div>
                     </div>
-                    <MoreHorizIcon />
+                    <MoreHorizIcon/>
                 </div>
-                <div className="content" style={{margin:'20px 0'}}>
+                <div className="content" style={{margin: '20px 0'}}>
                     <p style={{whiteSpace: 'pre-line', lineHeight: '1.5rem'}}>{post.desc}</p>
                     {post?.img && <img style={{
                         width: "100%",
                         maxHeight: "500px",
                         objectFit: "cover",
                         marginTop: "20px",
-                    }} src={post.img} alt="" />}
+                    }} src={post.img} alt=""/>}
                 </div>
-                <div style={{display:'flex', alignItems:'center', gap:'20px'}} className="info">
+                <div style={{display: 'flex', alignItems: 'center', gap: '20px'}} className="info">
                     <div
                         style={{
                             display: "flex",
@@ -132,7 +134,7 @@ const Post = ({ rawPost }) => {
                         className="item"
                         onClick={handleLike}
                     >
-                        {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
+                        {liked ? <FavoriteOutlinedIcon/> : <FavoriteBorderOutlinedIcon/>}
                         {likes} {likes > 1 ? "Likes" : "Like"}
                     </div>
                     <div
@@ -144,7 +146,7 @@ const Post = ({ rawPost }) => {
                             fontSize: "14px",
                         }}
                         className="item" onClick={() => setCommentOpen(!commentOpen)}>
-                        <TextsmsOutlinedIcon />
+                        <TextsmsOutlinedIcon/>
                         {commentsAmount} {commentsAmount > 1 ? "Comments" : "Comment"}
                     </div>
                     <div
@@ -156,12 +158,19 @@ const Post = ({ rawPost }) => {
                             fontSize: "14px",
                         }}
                         className="item">
-                        <ShareOutlinedIcon />
+                        <ShareOutlinedIcon/>
                         Share
                     </div>
                 </div>
                 {commentOpen && <Comments post={post} commentsAmount={commentsAmount} {...{setCommentsAmount}}/>}
-            </div>
+            </div>}
+            {
+                !rawPost && <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding:'90px'}}>
+                    <Typography variant="h5" component="div" gutterBottom>
+                        No Post Yet
+                    </Typography>
+                </Box>
+            }
         </div>
     );
 };

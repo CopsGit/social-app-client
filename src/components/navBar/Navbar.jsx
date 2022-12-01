@@ -7,17 +7,20 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import {Link, useNavigate} from "react-router-dom";
-import { useContext } from "react";
+import React, {useContext, useState} from "react";
 import { DarkModeContext } from "../../context/darkModeContext";
 import NavbarAvatar from "./NavbarAvatar";
 import {useDispatch, useSelector} from "react-redux";
 import {saveShowLeftBar} from "../../redux/slices/postSlice";
+import {AuthContext} from "../../context/authContext";
 
 const Navbar = () => {
     const { toggle, darkMode } = useContext(DarkModeContext);
     const navigate = useNavigate()
     const showLeftBar = useSelector(state => state.post.showLeftBar)
     const dispatch = useDispatch()
+    const [open, setOpen] = useState(false);
+    const { currentUser} = useContext(AuthContext);
 
     return (
         <div className="navbar">
@@ -39,7 +42,16 @@ const Navbar = () => {
             </div>
             <div className="right">
                 <div className="user">
-                    <NavbarAvatar/>
+                    <img
+                        src={currentUser?.avatar}
+                        alt=""
+                        onClick={e=>setOpen(true)}
+                        style={{
+                            cursor: 'pointer'
+                        }}
+                    />
+                    <span>{currentUser?.name}</span>
+                    <NavbarAvatar open={open} setOpen={setOpen} />
                 </div>
                 <EmailOutlinedIcon />
                 <NotificationsOutlinedIcon />

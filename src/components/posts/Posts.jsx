@@ -63,6 +63,10 @@ const Posts = ({userId}) => {
             <Post rawPost={post} key={index}/>
         ))}
         {
+            posts.length === 0 && !loading &&
+            <Post rawPost={null}/>
+        }
+        {
             loading &&
             [1, 2, 3, 4, 5, 6].map((item, index) => (
                 <Box key={index}>

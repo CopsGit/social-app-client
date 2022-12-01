@@ -13,11 +13,15 @@ import Layout from "./Layout";
 import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../context/authContext";
 import api from "../helpers/axiosSetting";
-import {Backdrop, CircularProgress} from "@mui/material";
+import {Backdrop, Button, CircularProgress, Dialog} from "@mui/material";
 import * as React from "react";
 import {useParams} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {saveReloadPost} from "../redux/slices/postSlice";
+import {TextField} from "@mui/joy";
+import Address from "../components/address/Address";
+import IconButton from "@mui/material/IconButton";
+import NavbarAvatar from "../components/navBar/NavbarAvatar";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -26,6 +30,11 @@ const Profile = () => {
     const accessToken = localStorage.getItem("accessToken")
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch()
+    const [addressDialog, setAddressDialog] = useState(false);
+    const [profileDialog, setProfileDialog] = useState(false);
+
+
+    const cover = user?.cover ? user.cover : "https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
 
     useEffect(()=>{
         setLoading(true)
@@ -47,15 +56,70 @@ const Profile = () => {
         fetchUser().then();
     },[userId])
 
+    const file = document.getElementById("cover");
+    if (file) {
+        file.onchange = async () => {
+            setLoading(true)
+            console.log(file.files[0])
+            let fileReader = new FileReader();
+            fileReader.readAsDataURL(file.files[0]);
+            fileReader.onload = async (e) => {
+                try {
+                    await api.post('/user/auth/update', {
+                        cover: e.target.result
+                    }, {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`
+                        }
+                    })
+                    window.location.reload()
+                } catch (e) {
+                    console.log(e)
+                }
+            }
+        }
+    }
+
+    const handleWebsite = async (website) => {
+        setLoading(true)
+        try{
+            await api.post('/user/auth/update', {
+                website
+            },{
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+            window.location.reload()
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     return (
         <Layout>
             <div className="profile">
                 <div className="images">
-                    <img
-                        src="https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                        alt=""
-                        className="cover"
-                    />
+                    {currentUser.cover === user?.cover &&
+                        <>
+                            <input type="file" id='cover' style={{display: 'none'}}
+                                   accept="image/png, image/jpeg"/>
+                            <label htmlFor="cover">
+                                <img
+                                    src={cover}
+                                    alt=""
+                                    className="cover"
+                                />
+                            </label>}
+                        </>
+                    }
+                    {currentUser.cover !== user?.cover &&
+                        <img
+                            src={cover}
+                            alt=""
+                            className="coverOther"
+                        />
+                    }
                     <img
                         src={user?.avatar}
                         alt=""
@@ -84,25 +148,56 @@ const Profile = () => {
                         <div className="center">
                             <span>{user?.username}</span>
                             <div className="info">
-                                <div className="item">
+                                <Button disabled={currentUser?._id !== userId} className="item" onClick={e=>setAddressDialog(true)}>
                                     <PlaceIcon />
-                                    <span>USA</span>
-                                </div>
-                                <div className="item">
-                                    <LanguageIcon />
-                                    <span>lama.dev</span>
-                                </div>
+                                    <span>{currentUser.location}</span>
+                                </Button>
+                                <Dialog open={addressDialog} onClose={e=>setAddressDialog(false)}>
+                                    <Address curAddress={currentUser.address} type={'user'}/>
+                                </Dialog>
+                                <TextField
+                                    sx={{
+                                        "& .JoyInput-root":{border: 'none'},
+                                        // width: '50%',
+                                    }}
+                                    disabled={currentUser?._id !== userId}
+                                    className="item"
+                                    startDecorator={<LanguageIcon />}
+                                    placeholder={user?.website ? user?.website : "Website"}
+                                    onKeyDown={e=>{
+                                        if(e.key === 'Enter'){
+                                            handleWebsite(e.target.value)
+                                        }
+                                    }}
+                                />
                             </div>
                             {
                                 currentUser?._id !== userId &&
-                                <button>follow</button>
+                                <button>Follow</button>
                             }
+                            {
+                                currentUser?._id === userId &&
+                                <button onClick={e=>setProfileDialog(true)}>Edit profile</button>
+                            }
+                            <NavbarAvatar open={profileDialog} setOpen={setProfileDialog} />
                         </div>
                         {
                             currentUser?._id !== userId &&
                             <div className="right">
-                                <EmailOutlinedIcon/>
-                                <MoreVertIcon/>
+                                <IconButton >
+                                    <EmailOutlinedIcon />
+                                </IconButton >
+                                <IconButton >
+                                    <MoreVertIcon />
+                                </IconButton >
+                            </div>
+                        }
+                        {
+                            currentUser?._id === userId &&
+                            <div className="right">
+                                <IconButton >
+                                    <MoreVertIcon />
+                                </IconButton >
                             </div>
                         }
                     </div>
