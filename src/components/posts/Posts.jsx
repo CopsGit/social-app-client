@@ -26,8 +26,8 @@ const Posts = ({userId}) => {
                         }
                     });
                     const data = await res.data.info;
-                    // const post = data.sort((p1, p2) => p1.status.createdAt < p2.status.createdAt ? 1 : -1);
-                    setPosts(data);
+                    const post = data.sort((p1, p2) => p1.status.createdAt < p2.status.createdAt ? 1 : -1);
+                    setPosts(post);
                     setLoading(false);
                     dispatch(saveReloadPost(false))
                 } catch (err) {
@@ -59,7 +59,7 @@ const Posts = ({userId}) => {
     }, [reloadPost])
 
     return <div className="posts">
-        {posts.map((post, index) => (
+        {posts?.map((post, index) => (
             <Post rawPost={post} key={index}/>
         ))}
         {
