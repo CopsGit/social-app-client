@@ -79,7 +79,7 @@ const Login = () => {
                 <CircularProgress color="inherit" />
             </Backdrop>
             {
-                err.length > 0 &&
+                err?.length > 0 &&
                 <Alert
                     severity="error"
                     onClose={() => setErr('')}

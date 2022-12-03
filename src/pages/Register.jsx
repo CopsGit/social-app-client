@@ -104,7 +104,7 @@ const Register = () => {
                 <CircularProgress color="inherit" />
             </Backdrop>
             {
-                err.length >0 && <Alert
+                err?.length >0 && <Alert
                     severity="error"
                     onClose={() => setErr('')}
                     sx={{

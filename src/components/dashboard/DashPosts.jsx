@@ -34,7 +34,7 @@ const DashPosts = () => {
                     const rawRow = {
                         id: post._id,
                         userId: post?.userId,
-                        likes: post?.interaction?.likes.length,
+                        likes: post?.interaction?.likes?.length,
                         comments: post?.interaction?.comments?.length,
                         isActive: post.status.isActive,
                         createdAt: post.status.createdAt,
@@ -186,7 +186,7 @@ const DashPosts = () => {
                 const rawRow = {
                     id: post._id,
                     userId: post?.userId,
-                    likes: post?.interaction?.likes.length,
+                    likes: post?.interaction?.likes?.length,
                     comments: post?.interaction?.comments?.length,
                     isActive: post.status.isActive,
                     createdAt: post.status.createdAt,
@@ -206,7 +206,7 @@ const DashPosts = () => {
                         const rawRow = {
                             id: post._id,
                             userId: post?.userId,
-                            likes: post?.interaction?.likes.length,
+                            likes: post?.interaction?.likes?.length,
                             comments: post?.interaction?.comments?.length,
                             isActive: post.status.isActive,
                             createdAt: post.status.createdAt,
@@ -242,7 +242,7 @@ const DashPosts = () => {
                 const rawRow = {
                     id: post._id,
                     userId: post?.userId,
-                    likes: post?.interaction?.likes.length,
+                    likes: post?.interaction?.likes?.length,
                     comments: post?.interaction?.comments?.length,
                     isActive: post.status.isActive,
                     createdAt: post.status.createdAt,
@@ -309,7 +309,7 @@ const DashPosts = () => {
                 <CircularProgress color="inherit" />
             </Backdrop>
             {
-                errMessage.length > 0 &&
+                errMessage?.length > 0 &&
                 <Alert
                     severity="error"
                     onClose={() => setErrMessage('')}

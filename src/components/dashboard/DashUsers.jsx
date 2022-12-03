@@ -232,7 +232,7 @@ const DashUsers = () => {
                 <CircularProgress color="inherit" />
             </Backdrop>
             {
-                errMessage.length > 0 &&
+                errMessage?.length > 0 &&
                 <Alert
                     severity="error"
                     onClose={() => setErrMessage('')}

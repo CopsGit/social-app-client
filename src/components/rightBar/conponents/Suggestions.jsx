@@ -114,7 +114,7 @@ const Suggestions = () => {
                 {showMore ? "Show Less" : "Show More"}
             </Typography>
             {
-                errMessage.length > 0 &&
+                errMessage?.length > 0 &&
                 <Alert
                     severity="error"
                     onClose={() => setErrMessage('')}
