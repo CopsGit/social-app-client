@@ -34,7 +34,19 @@ const Navbar = () => {
                 ) : (
                     <DarkModeOutlinedIcon sx={{cursor:'pointer'}} onClick={toggle} />
                 )}
-                <GridViewOutlinedIcon sx={{cursor:'pointer'}} onClick={e=>dispatch(saveShowLeftBar(!showLeftBar))}/>
+                <GridViewOutlinedIcon className='gridView' sx={{cursor:'pointer'}} onClick={e=>dispatch(saveShowLeftBar(!showLeftBar))}/>
+                <div className="avatarView">
+                    <img
+                        src={currentUser?.avatar}
+                        alt=""
+                        onClick={e=>setOpen(true)}
+                        style={{
+                            cursor: 'pointer'
+                        }}
+                    />
+                    <span>{currentUser?.name}</span>
+                    <NavbarAvatar open={open} setOpen={setOpen} />
+                </div>
                 <div className="search">
                     <SearchOutlinedIcon />
                     <input type="text" placeholder="Search..." />

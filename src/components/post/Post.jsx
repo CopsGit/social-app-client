@@ -96,8 +96,13 @@ const Post = ({ rawPost }) => {
             {rawPost && <div style={{padding: '20px'}} className='container'>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}} className='user'>
                     <div style={{display: 'flex', gap: '20px'}} className='userinfo'>
-                        <img style={{height: '40px', width: '40px', borderRadius: "50%", objectFit: "cover"}}
-                             src={post.profilePic} alt=""/>
+                        <Link
+                            to={`/profile/${post.userId}`}
+                            style={{textDecoration: "none", color: "inherit"}}
+                        >
+                            <img style={{height: '40px', width: '40px', borderRadius: "50%", objectFit: "cover"}}
+                                 src={post.profilePic} alt=""/>
+                        </Link>
                         <div style={{display: "flex", flexDirection: "column",}} className='details'
                         >
                             <Link

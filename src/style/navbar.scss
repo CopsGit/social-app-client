@@ -19,6 +19,29 @@
       align-items: center;
       gap: 30px;
 
+      .gridView{
+        @include mobile{
+          display: none;
+        }
+      }
+
+      .avatarView{
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+
+        img {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        @media only screen and (min-width: 480px) {
+          display: none;
+        }
+      }
+
       span {
         font-weight: bold;
         font-size: 20px;
@@ -62,12 +85,11 @@
       .user {
         display: flex;
         align-items: center;
-        //gap: 10px;
         font-weight: 500;
 
-        //@include tablet{
-        //  display: none;
-        //}
+        @include tablet{
+          display: none;
+        }
 
         img {
           width: 30px;
