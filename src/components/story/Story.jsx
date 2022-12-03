@@ -16,12 +16,14 @@ const Story = ({open, setOpen, story}) => {
         setOpen(false);
     }
 
-    useEffect(()=>{
-        setInterval(()=>{
-            dispatch(saveCurStoryIndex(curStoryIndex+1))
+    console.log(curStoryIndex)
 
-        }, 1000)
-    },[])
+    // useEffect(()=>{
+    //     setInterval(()=>{
+    //         dispatch(saveCurStoryIndex(curStoryIndex+1))
+    //
+    //     }, 1000)
+    // },[])
 
     const handleLeft = () => {
         if (curStoryIndex > 0) {

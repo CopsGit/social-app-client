@@ -68,7 +68,6 @@ const Share = () => {
                     await api.post("/post/create", {
                         content: {
                             text,
-                            avatar: currentUser.avatar,
                             img: blob,
                         }
                     }, {
@@ -79,11 +78,9 @@ const Share = () => {
                     setLoading(false);
                     setInputValue("");
                     setCurFile(null);
-                    // setProgress(100)
                 } catch (e) {
                     console.log(e);
                     setLoading(false);
-                    // setProgress(100)
                 }
             }
         } else {
@@ -91,7 +88,6 @@ const Share = () => {
                 await api.post("/post/create", {
                     content: {
                         text,
-                        avatar: currentUser.avatar,
                     }
                 }, {
                     headers: {
