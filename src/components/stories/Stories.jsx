@@ -5,6 +5,8 @@ import api from "../../helpers/axiosSetting";
 import {Typography} from "@mui/material";
 import {Skeleton} from "@mui/lab";
 import Story from "../story/Story";
+import {useDispatch, useSelector} from "react-redux";
+import {saveCurStoryIndex} from "../../redux/slices/postSlice";
 
 const Stories = () => {
     const {currentUser} = useContext(AuthContext)
@@ -12,6 +14,8 @@ const Stories = () => {
     const [loading, setLoading] = useState(false);
     const [dialog, setDialog] = useState(false);
     const accessToken = localStorage.getItem("accessToken")
+    const dispatch = useDispatch()
+    const curStoryIndex = useSelector(state => state.post.curStoryIndex)
 
     useEffect(() => {
         setLoading(true)
@@ -41,6 +45,11 @@ const Stories = () => {
         fetchStories().then()
     }, []);
 
+    const handleDialog = async (index) => {
+        setDialog(!dialog)
+        dispatch(saveCurStoryIndex(index))
+    }
+
     return (
         <div className="stories">
             <div className="story">
@@ -49,7 +58,7 @@ const Stories = () => {
                 <button>+</button>
             </div>
             {stories?.map((story, index)=>(
-                <div className="story" key={index}>
+                <div className="story" key={index} onClick={e=>handleDialog(index)}>
                     <img src={story?.content?.img} alt="" />
                     <span>{story?.content?.text}</span>
                 </div>
@@ -62,7 +71,9 @@ const Stories = () => {
                 </Typography>
                     ))
             }
-            <Story open={dialog} setOpen={setDialog} />
+            {
+                !loading && stories?.length > 0 && <Story open={dialog} setOpen={setDialog} story={stories[curStoryIndex]}/>
+            }
         </div>
     )
 }

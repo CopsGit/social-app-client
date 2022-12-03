@@ -4,6 +4,7 @@ const initialState = {
     reloadPost: false,
     reloadComment: false,
     showLeftBar: true,
+    curStoryIndex: 0,
 }
 
 export const postSlice = createSlice({
@@ -19,6 +20,9 @@ export const postSlice = createSlice({
         saveShowLeftBar: (state, action) => {
             state.showLeftBar = action.payload
         },
+        saveCurStoryIndex: (state, action) => {
+            state.curStoryIndex = action.payload
+        },
     }
 })
 
@@ -27,5 +31,6 @@ export default postSlice.reducer
 export const {
     saveReloadPost,
     saveReloadComment,
-    saveShowLeftBar
+    saveShowLeftBar,
+    saveCurStoryIndex
 } = postSlice.actions
