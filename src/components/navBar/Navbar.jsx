@@ -13,6 +13,7 @@ import NavbarAvatar from "./NavbarAvatar";
 import {useDispatch, useSelector} from "react-redux";
 import {saveShowLeftBar} from "../../redux/slices/postSlice";
 import {AuthContext} from "../../context/authContext";
+import {TextField} from "@mui/joy";
 
 const Navbar = () => {
     const { toggle, darkMode } = useContext(DarkModeContext);
@@ -47,10 +48,13 @@ const Navbar = () => {
                     <span>{currentUser?.name}</span>
                     <NavbarAvatar open={open} setOpen={setOpen} />
                 </div>
-                <div className="search">
-                    <SearchOutlinedIcon />
-                    <input type="text" placeholder="Search..." />
-                </div>
+                    <TextField
+                        type="text"
+                        className="search"
+                        placeholder="Search Post or User..."
+                        startDecorator={<SearchOutlinedIcon />}
+                        onKeyDown={e=>navigate(`/post/${e.target.value}`)}
+                    />
             </div>
             <div className="right">
                 <div className="user">
