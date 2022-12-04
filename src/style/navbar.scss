@@ -85,9 +85,9 @@
         align-items: center;
         font-weight: 500;
 
-        @include tablet {
-          display: none;
-        }
+        //@include tablet {
+        //  display: none;
+        //}
 
         img {
           width: 30px;
