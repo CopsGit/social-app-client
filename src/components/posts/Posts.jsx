@@ -68,7 +68,7 @@ const Posts = ({userId}) => {
         }
         {
             loading &&
-            [1, 2, 3, 4, 5, 6].map((item, index) => (
+            [...Array(6)].map((item, index) => (
                 <Box key={index}>
                     <Typography component="div" variant={"h1"}>
                         <Skeleton/>

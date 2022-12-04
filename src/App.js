@@ -12,6 +12,7 @@ import {useContext, useEffect, useState} from "react";
 import { AuthContext } from "./context/authContext";
 import Dashboard from "./pages/Dashboard";
 import LoadingPage from "./pages/LoadingPage";
+import PostPage from "./pages/PostPage";
 
 function App() {
     const {currentUser} = useContext(AuthContext);
@@ -56,6 +57,14 @@ function App() {
             element: (
                 <ProtectedRoute>
                     <Profile />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: "/post/:postId",
+            element: (
+                <ProtectedRoute>
+                    <PostPage />
                 </ProtectedRoute>
             ),
         },
