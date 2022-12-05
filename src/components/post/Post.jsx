@@ -11,12 +11,14 @@ import api from "../../helpers/axiosSetting";
 import {AuthContext} from "../../context/authContext";
 import {Typography} from "@mui/material";
 import Box from "@mui/material/Box";
+import ShareCopyLink from "../shareCopyLink/ShareCopyLink";
 
 const Post = ({ rawPost }) => {
     const [commentOpen, setCommentOpen] = useState(false);
     const [liked, setLiked] = useState(false);
     const [likes, setLikes] = useState(rawPost?.interaction?.likes?.length);
     const [commentsAmount, setCommentsAmount] = useState(rawPost?.interaction?.comments?.length);
+    const [shareOpen, setShareOpen] = useState(false);
     const accessToken = localStorage.getItem("accessToken");
     const {currentUser} = useContext(AuthContext);
 
@@ -56,24 +58,25 @@ const Post = ({ rawPost }) => {
     }
 
     useEffect(() => {
-        const fetchData = async () => {
-            try{
-                const res = await api.get(`/post/get/${post.id}`, {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    }
-                })
-                const likes = await res.data.info.interaction.likes;
-                if (likes && likes.includes(currentUser._id)) {
+        // const fetchData = async () => {
+        //     try{
+        //         const res = await api.get(`/post/get/${post.id}`, {
+        //             headers: {
+        //                 Authorization: `Bearer ${accessToken}`,
+        //             }
+        //         })
+        //         const likes = await res.data.info.interaction.likes;
+                if (post?.likes?.includes(currentUser._id)) {
                     setLiked(true);
-                } else {
-                    setLiked(false);
                 }
-            } catch (e) {
-                console.log(e)
-            }
-        }
-        fetchData().then();
+        //         } else {
+        //             setLiked(false);
+        //         }
+        //     } catch (e) {
+        //         console.log(e)
+        //     }
+        // }
+        // fetchData().then();
     }, []);
 
 
@@ -162,12 +165,14 @@ const Post = ({ rawPost }) => {
                             cursor: "pointer",
                             fontSize: "14px",
                         }}
+                        onClick={()=>setShareOpen(!shareOpen)}
                         className="item">
                         <ShareOutlinedIcon/>
                         Share
                     </div>
                 </div>
                 {commentOpen && <Comments post={post} commentsAmount={commentsAmount} {...{setCommentsAmount}}/>}
+                {shareOpen && <ShareCopyLink open={shareOpen} setOpen={setShareOpen} link={`http://localhost:3000/post/${post.id}`}/>}
             </div>}
             {
                 !rawPost && <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding:'90px'}}>

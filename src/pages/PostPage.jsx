@@ -12,13 +12,15 @@ const PostPage = () => {
     const [loading, setLoading] = useState(false);
     const accessToken = localStorage.getItem("accessToken");
 
-    const postId = useParams();
+    const postId = useParams().postId;
+
+    console.log(postId)
 
     useEffect(() => {
         setLoading(true);
         const fetchPost = async () => {
             try{
-                const res = await api.get(`/post/${postId}`, {
+                const res = await api.get(`/post/get/${postId}`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                     }
