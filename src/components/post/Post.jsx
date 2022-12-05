@@ -12,6 +12,7 @@ import {AuthContext} from "../../context/authContext";
 import {Typography} from "@mui/material";
 import Box from "@mui/material/Box";
 import ShareCopyLink from "../shareCopyLink/ShareCopyLink";
+import {useSelector} from "react-redux";
 
 const Post = ({ rawPost }) => {
     const [commentOpen, setCommentOpen] = useState(false);
@@ -21,6 +22,7 @@ const Post = ({ rawPost }) => {
     const [shareOpen, setShareOpen] = useState(false);
     const accessToken = localStorage.getItem("accessToken");
     const {currentUser} = useContext(AuthContext);
+    const refreshPost = useSelector(state => state.post.reloadPost);
 
     const post = {
         id: rawPost?._id,
@@ -58,26 +60,10 @@ const Post = ({ rawPost }) => {
     }
 
     useEffect(() => {
-        // const fetchData = async () => {
-        //     try{
-        //         const res = await api.get(`/post/get/${post.id}`, {
-        //             headers: {
-        //                 Authorization: `Bearer ${accessToken}`,
-        //             }
-        //         })
-        //         const likes = await res.data.info.interaction.likes;
                 if (post?.likes?.includes(currentUser._id)) {
                     setLiked(true);
                 }
-        //         } else {
-        //             setLiked(false);
-        //         }
-        //     } catch (e) {
-        //         console.log(e)
-        //     }
-        // }
-        // fetchData().then();
-    }, []);
+    }, [refreshPost]);
 
 
     const handleLike = async () => {

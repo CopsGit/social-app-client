@@ -13,7 +13,7 @@ import Layout from "./Layout";
 import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../context/authContext";
 import api from "../helpers/axiosSetting";
-import {Backdrop, Button, CircularProgress, Dialog} from "@mui/material";
+import {Backdrop, Button, CircularProgress, Dialog, Divider, MenuItem, Popover} from "@mui/material";
 import * as React from "react";
 import {useParams} from "react-router-dom";
 import {useDispatch} from "react-redux";
@@ -22,6 +22,8 @@ import {TextField} from "@mui/joy";
 import Address from "../components/address/Address";
 import IconButton from "@mui/material/IconButton";
 import NavbarAvatar from "../components/navBar/NavbarAvatar";
+import Iconify from "../components/dashboard/components/iconify";
+import ShareCopyLink from "../components/shareCopyLink/ShareCopyLink";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -32,7 +34,8 @@ const Profile = () => {
     const dispatch = useDispatch()
     const [addressDialog, setAddressDialog] = useState(false);
     const [profileDialog, setProfileDialog] = useState(false);
-
+    const [openMore, setOpenMore] = useState(null);
+    const [shareOpen, setShareOpen] = useState(false);
 
     const cover = user?.cover ? user.cover : "https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
 
@@ -95,6 +98,14 @@ const Profile = () => {
             console.log(e)
         }
     }
+
+    const handleOpenMenu = (event) => {
+        setOpenMore(event.currentTarget);
+    };
+
+    const handleCloseMenu = () => {
+        setOpenMore(null);
+    };
 
     return (
         <Layout>
@@ -188,7 +199,7 @@ const Profile = () => {
                                     <EmailOutlinedIcon />
                                 </IconButton >
                                 <IconButton >
-                                    <MoreVertIcon />
+                                    <MoreVertIcon onClick={handleOpenMenu}/>
                                 </IconButton >
                             </div>
                         }
@@ -196,13 +207,39 @@ const Profile = () => {
                             currentUser?._id === userId &&
                             <div className="right">
                                 <IconButton >
-                                    <MoreVertIcon />
+                                    <MoreVertIcon onClick={handleOpenMenu}/>
                                 </IconButton >
                             </div>
                         }
+                        <Popover
+                            open={Boolean(openMore)}
+                            anchorEl={openMore}
+                            onClose={handleCloseMenu}
+                            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                            PaperProps={{
+                                sx: {
+                                    p: 1,
+                                    '& .MuiMenuItem-root': {
+                                        px: 1,
+                                        typography: 'body2',
+                                        borderRadius: 0.75,
+                                    },
+                                },
+                            }}
+                        >
+                            <MenuItem onClick={()=>setShareOpen(!shareOpen)}>
+                                <Iconify icon={'eva:share-fill'} sx={{ mr: 2 }} />
+                                Share
+                            </MenuItem>
+                            <Divider sx={{ borderStyle: 'dashed' }} />
+                        </Popover>
+                        {shareOpen && <ShareCopyLink open={shareOpen} setOpen={setShareOpen} link={`http://localhost:3000/profile/${userId}`}/>}
                     </div>
                     <Posts userId={userId} />
+
                 </div>
+
                 {
                     loading && <Backdrop
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
