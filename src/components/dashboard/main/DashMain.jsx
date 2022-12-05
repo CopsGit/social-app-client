@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import '../../../style/dashboard.scss'
 import { faker } from '@faker-js/faker';
 import { useTheme } from '@mui/material/styles';
@@ -10,12 +10,49 @@ import AppConversionRates from "./components/AppConversionRates";
 import AppCurrentSubject from "./components/AppCurrentSubject";
 import AppOrderTimeline from "./components/AppOrderTimeline";
 import AppTasks from "./components/AppTasks";
+import api from "../../../helpers/axiosSetting";
 
 
 
 const DashMain = () => {
     const theme = useTheme();
+    const [users, setUsers] = useState(0);
+    const [posts, setPosts] = useState(0);
+    const [activities, setActivities] = useState(0);
+    const [loading, setLoading] = useState(false);
 
+    const accessToken = localStorage.getItem('accessToken');
+
+    useEffect(() => {
+        setLoading(true);
+        const fetchData = async () => {
+            try{
+                const user = await api.get('/dash/users',{
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+                const post = await api.get('/dash/posts',{
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                })
+                const activity = await api.get('/dash/activities',{
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                })
+                setUsers(user.data.info);
+                setPosts(post.data.info);
+                setActivities(activity.data.info);
+                setLoading(false);
+            } catch (e) {
+                console.log(e)
+                setLoading(false);
+            }
+        }
+        fetchData().then();
+    }, []);
     return (
         <Grid container>
             <Container maxWidth="xl">
@@ -25,11 +62,11 @@ const DashMain = () => {
 
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppWidgetSummary title="Users" total={714000} icon={'heroicons:users-20-solid'} />
+                        <AppWidgetSummary title="Users" total={users} icon={'heroicons:users-20-solid'} />
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppWidgetSummary title="Posts" total={1352831} color="info" icon={'bi:file-post'} />
+                        <AppWidgetSummary title="Posts" total={posts} color="info" icon={'bi:file-post'} />
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3}>
@@ -37,7 +74,7 @@ const DashMain = () => {
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} />
+                        <AppWidgetSummary title="Activities" total={activities} color="error" icon={'ant-design:bug-filled'} />
                     </Grid>
 
                     <Grid item xs={12} md={6} lg={4}>
