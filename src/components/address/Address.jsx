@@ -74,7 +74,7 @@ const Address = ({curAddress, type}) => {
                 placeholder={curAddress? curAddress : "Address"}
                 inputComponent={({ inputRef, onFocus, onBlur, ...props }) => (
                     <Autocomplete
-                        apiKey={'AIzaSyDYrYPIgl7BayCY71rFeXdWomcWw9OdvSQ'}
+                        apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
                         {...props}
                         onPlaceSelected={(selected) => handleCountry(selected)}
                     />
