@@ -17,8 +17,8 @@ import {useSelector} from "react-redux";
 const Post = ({ rawPost }) => {
     const [commentOpen, setCommentOpen] = useState(false);
     const [liked, setLiked] = useState(false);
-    const [likes, setLikes] = useState(rawPost?.interaction?.likes?.length);
-    const [commentsAmount, setCommentsAmount] = useState(rawPost?.interaction?.comments?.length);
+    const [likes, setLikes] = useState(rawPost?.post?.interaction?.likes?.length);
+    const [commentsAmount, setCommentsAmount] = useState(rawPost?.post?.interaction?.comments?.length);
     const [shareOpen, setShareOpen] = useState(false);
     const accessToken = localStorage.getItem("accessToken");
     const {currentUser} = useContext(AuthContext);

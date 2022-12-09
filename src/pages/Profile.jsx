@@ -121,7 +121,7 @@ const Profile = () => {
                                     alt=""
                                     className="cover"
                                 />
-                            </label>}
+                            </label>
                         </>
                     }
                     {currentUser.cover !== user?.cover &&
