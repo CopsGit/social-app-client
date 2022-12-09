@@ -87,7 +87,7 @@ to discuss what you would like to change.
 Please make sure to update tests as appropriate.
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 ## Acknowledgments
 
