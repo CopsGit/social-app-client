@@ -17,6 +17,7 @@ const Stories = () => {
     const [loading, setLoading] = useState(false);
     const [dialog, setDialog] = useState(false);
     const [create, setCreate] = useState(false);
+    const [curPage, setCurPage] = useState(1);
     const [inputValue, setInputValue] = useState("");
     const accessToken = localStorage.getItem("accessToken")
     const dispatch = useDispatch()
@@ -26,21 +27,12 @@ const Stories = () => {
         setLoading(true)
         const fetchStories = async () => {
             try {
-                const res = await api.get('/story/all', {
+                const res = await api.get(`/story/all/${curPage}`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }})
-                let storiesRaw = []
-                await Promise.all(res?.data?.info?.map(async (story) => {
-                    const user = await api.get(`/user/getOne/${story?.userId}`, {
-                        headers: {
-                            Authorization: `Bearer ${accessToken}`
-                        }
-                    })
-                    story = {...story, user: user?.data?.info}
-                    storiesRaw.push(story)
-                }))
-                setStories(storiesRaw)
+                console.log(res?.data?.info)
+                setStories(res?.data?.info)
                 setLoading(false)
             } catch (err) {
                 console.log(err)
@@ -113,10 +105,10 @@ const Stories = () => {
                 <span>{currentUser?.name}</span>
                 <button onClick={e=>setCreate(true)}>+</button>
             </div>
-            {stories?.slice(0, 5).map((story, index)=>(
+            {stories?.map((story, index)=>(
                 <div className="story" key={index} onClick={e=>handleDialog(index)}>
-                    <img src={story?.content?.img} alt="" />
-                    <span>{story?.content?.text}</span>
+                    <img src={story?.post?.content?.img} alt="" />
+                    <span>{story?.post?.content?.text}</span>
                 </div>
             ))}
             {

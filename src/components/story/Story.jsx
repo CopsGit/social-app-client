@@ -18,13 +18,6 @@ const Story = ({open, setOpen, story}) => {
 
     console.log(curStoryIndex)
 
-    // useEffect(()=>{
-    //     setInterval(()=>{
-    //         dispatch(saveCurStoryIndex(curStoryIndex+1))
-    //
-    //     }, 1000)
-    // },[])
-
     const handleLeft = () => {
         if (curStoryIndex > 0) {
             dispatch(saveCurStoryIndex(curStoryIndex - 1))
@@ -32,7 +25,7 @@ const Story = ({open, setOpen, story}) => {
     }
 
     const handleRight = () => {
-        if (curStoryIndex < 5) {
+        if (curStoryIndex < 4) {
             dispatch(saveCurStoryIndex(curStoryIndex + 1))
         }
     }
@@ -49,7 +42,7 @@ const Story = ({open, setOpen, story}) => {
                 padding: "15px",
                 height: "100vh",
                 width: "100%",
-                background: `url(${story?.content?.img})`,
+                background: `url(${story?.post?.content?.img})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -95,7 +88,7 @@ const Story = ({open, setOpen, story}) => {
                     borderRadius:'4px',
                 }}>
                     <Typography sx={{opacity:'1', whiteSpace: 'pre-line', display:'grid'}} fontWeight={"bolder"} color={"white"} variant={'h5'}>
-                        {story?.content?.text}
+                        {story?.post?.content?.text}
                     </Typography>
                 </Grid>
                 <Button sx={{
