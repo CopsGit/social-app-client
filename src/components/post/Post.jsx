@@ -25,15 +25,15 @@ const Post = ({ rawPost }) => {
     const refreshPost = useSelector(state => state.post.reloadPost);
 
     const post = {
-        id: rawPost?._id,
-        userId: rawPost?.userId,
+        id: rawPost?.post?._id,
+        userId: rawPost?.post?.userId,
         name: rawPost?.user?.username,
         profilePic: rawPost?.user?.avatar,
-        img: rawPost?.content?.img,
-        desc: rawPost?.content?.text,
-        likes: rawPost?.interaction?.likes,
-        comments: rawPost?.interaction?.comments,
-        createdAt: rawPost?.status?.createdAt,
+        img: rawPost?.post?.content?.img,
+        desc: rawPost?.post?.content?.text,
+        likes: rawPost?.post?.interaction?.likes,
+        comments: rawPost?.post?.interaction?.comments,
+        createdAt: rawPost?.post?.status?.createdAt,
     }
 
     const timeDifference = () => {

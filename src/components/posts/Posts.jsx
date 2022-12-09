@@ -28,9 +28,6 @@ const Posts = ({userId}) => {
                     });
                     const data = await res.data.info;
                     console.log(data);
-                    // data.sort((a, b) => {
-                    //     return new Date(b.createdAt) - new Date(a.createdAt)
-                    // })
                     setPosts(data);
                     setLoading(false);
                     dispatch(saveReloadPost(false))
