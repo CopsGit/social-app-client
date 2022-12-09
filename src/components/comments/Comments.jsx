@@ -52,8 +52,7 @@ const Comments = ({post, setCommentsAmount, commentsAmount}) => {
                     }
                 })
                 const rawData = await res.data.info;
-                const data = rawData.sort((p1, p2) => p1.createdAt < p2.createdAt ? 1 : -1);
-                setComments(data);
+                setComments(rawData);
 
                 setLoading(false)
             } catch (err) {
