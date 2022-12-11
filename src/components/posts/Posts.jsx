@@ -12,6 +12,7 @@ const Posts = ({userId}) => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [curPage, setCurPage] = useState(1);
+    const [userCurPage, setUserCurPage] = useState(1);
     const accessToken = localStorage.getItem("accessToken");
     const reloadPost = useSelector(state => state.post.reloadPost)
     const dispatch = useDispatch()
@@ -21,7 +22,7 @@ const Posts = ({userId}) => {
         const fetchPosts = async () => {
             if (userId) {
                 try {
-                    const res = await api.get(`/post/${userId}`, {
+                    const res = await api.get(`/post/${userId}/${userCurPage}`, {
                         headers: {
                             Authorization: `Bearer ${accessToken}`,
                         }
@@ -61,15 +62,27 @@ const Posts = ({userId}) => {
     const handleLoadMore = async () => {
         setLoading(true);
         try {
-            const res = await api.get(`/post/all/${curPage + 1}`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                }
-            })
-            const data = await res.data.info;
-            setPosts([...posts, ...data]);
-            setCurPage(curPage + 1);
-            setLoading(false);
+            if (userId) {
+                const res = await api.get(`/post/${userId}/${userCurPage + 1}`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    }
+                })
+                const data = await res.data.info;
+                setPosts([...posts, ...data]);
+                setCurPage(curPage + 1);
+                setLoading(false);
+            } else {
+                const res = await api.get(`/post/all/${curPage + 1}`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    }
+                })
+                const data = await res.data.info;
+                setPosts([...posts, ...data]);
+                setCurPage(curPage + 1);
+                setLoading(false);
+            }
         } catch (err) {
             console.log(err);
             setLoading(false);
@@ -81,7 +94,7 @@ const Posts = ({userId}) => {
             <Post rawPost={post} key={index}/>
         ))}
         {
-            posts.length > 9 &&
+            posts.length > 9 && !loading &&
             <Button
                 onClick={handleLoadMore}
                 variant="contained"
