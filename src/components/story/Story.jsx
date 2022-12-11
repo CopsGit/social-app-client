@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Dialog, Grid, Typography} from "@mui/material";
 import "../../style/style.scss"
 import CloseIcon from '@mui/icons-material/Close';
@@ -7,8 +7,10 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import {useDispatch, useSelector} from "react-redux";
 import {saveCurStoryIndex} from "../../redux/slices/postSlice";
+import {LinearProgress} from "@mui/joy";
 
 const Story = ({open, setOpen, story}) => {
+    const [progress, setProgress] = useState(0);
     const curStoryIndex = useSelector(state => state.post.curStoryIndex)
     const dispatch = useDispatch()
 
@@ -16,7 +18,26 @@ const Story = ({open, setOpen, story}) => {
         setOpen(false);
     }
 
-    console.log(curStoryIndex)
+    useEffect(() => {
+        if (open) {
+            const timer = setInterval(() => {
+                setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 1));
+            }, 100);
+            return () => {
+                clearInterval(timer);
+            };
+        } else {
+            setProgress(0)
+        }
+
+    }, [open]);
+
+    useEffect(() => {
+        if (progress === 100 && curStoryIndex < 4) {
+            setProgress(0)
+            dispatch(saveCurStoryIndex(curStoryIndex + 1))
+        }
+    }, [progress])
 
     const handleLeft = () => {
         if (curStoryIndex > 0) {
@@ -38,6 +59,7 @@ const Story = ({open, setOpen, story}) => {
             maxWidth={"xs"}
             aria-labelledby="responsive-dialog-title"
         >
+
             <Grid container sx={{
                 padding: "15px",
                 height: "100vh",
@@ -91,6 +113,7 @@ const Story = ({open, setOpen, story}) => {
                         {story?.post?.content?.text}
                     </Typography>
                 </Grid>
+
                 <Button sx={{
                     position: "absolute",
                     top: "50%",
@@ -114,6 +137,13 @@ const Story = ({open, setOpen, story}) => {
                     <ChevronRightIcon/>
                 </Button>
             </Grid>
+            <LinearProgress
+                size="lg"
+                determinate
+                value={progress}
+                sx={{height: "10px"}}
+            />
+
         </Dialog>
     );
 };
