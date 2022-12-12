@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import {Button, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {saveReloadPost} from "../../redux/slices/postSlice";
+import { io } from "socket.io-client";
 
 const Posts = ({userId}) => {
     const [posts, setPosts] = useState([]);
@@ -16,6 +17,20 @@ const Posts = ({userId}) => {
     const accessToken = localStorage.getItem("accessToken");
     const reloadPost = useSelector(state => state.post.reloadPost)
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        const socket = io('http://localhost:8001');
+
+        socket.on('new_post', post => {
+
+            setPosts([post, ...posts]);
+            console.log(post)
+        });
+
+        return () => {
+            socket.disconnect();
+        }
+    }, [posts]);
 
     useEffect(() => {
         setLoading(true);
@@ -57,7 +72,7 @@ const Posts = ({userId}) => {
 
         }
         fetchPosts().then();
-    }, [reloadPost])
+    }, [])
 
     const handleLoadMore = async () => {
         setLoading(true);
