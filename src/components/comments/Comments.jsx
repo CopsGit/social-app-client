@@ -21,7 +21,7 @@ const Comments = ({post, setCommentsAmount, commentsAmount}) => {
 
     const timeDifference = (comment) => {
         const now = new Date();
-        const postDate = new Date(comment.createdAt);
+        const postDate = new Date(comment.comment.createdAt);
         const diff = now - postDate;
         const diffInSec = diff / 1000;
         const diffInMin = diffInSec / 60;
@@ -46,7 +46,7 @@ const Comments = ({post, setCommentsAmount, commentsAmount}) => {
         setLoading(true)
         const fetchData = async () => {
             try {
-                const res = await api.get(`/post/comment/${post.id}`, {
+                const res = await api.post(`/post/comment/${post.id}`, {},{
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                     }
@@ -66,7 +66,8 @@ const Comments = ({post, setCommentsAmount, commentsAmount}) => {
     const handleSend = async () => {
         setLoading(true)
         try{
-            await api.post(`/post/comment/${post.id}`, {
+            await api.post(`/post/comment`, {
+                postId: post.id,
                 text: inputValue,
             }, {
                 headers: {
@@ -118,7 +119,7 @@ const Comments = ({post, setCommentsAmount, commentsAmount}) => {
                     <img src={comment.user.avatar} alt="" />
                     <div className="info">
                         <span>{comment.user.username}</span>
-                        <p style={{whiteSpace: 'pre-line', lineHeight: '1.5rem'}}>{comment.text}</p>
+                        <p style={{whiteSpace: 'pre-line', lineHeight: '1.5rem'}}>{comment.comment.text}</p>
                     </div>
                     <span className="date">{timeDifference(comment)}</span>
                 </div>
