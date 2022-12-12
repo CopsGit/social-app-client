@@ -19,10 +19,9 @@ const Posts = ({userId}) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const socket = io('http://localhost:8001');
+        const socket = io(`${process.env.REACT_APP_SOCKET_URL}`);
 
         socket.on('new_post', post => {
-
             setPosts([post, ...posts]);
             console.log(post)
         });
